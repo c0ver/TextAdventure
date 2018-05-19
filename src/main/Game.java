@@ -165,6 +165,8 @@ public class Game extends Application {
 		try {
 			plot = new Image(new FileInputStream(PLOT_FILE));
 			square = new Image(new FileInputStream(SQUARE_FILE));
+
+			System.err.println(plot.getWidth() + " " + plot.getHeight());
 		} catch (FileNotFoundException e) {
 			System.err.println(e.getMessage());
 			return;

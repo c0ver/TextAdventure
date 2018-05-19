@@ -321,6 +321,11 @@
    <property name="name" value="CHATEAU"/>
   </properties>
  </tile>
+ <tile id="117">
+  <properties>
+   <property name="name" value="INN"/>
+  </properties>
+ </tile>
  <tile id="118">
   <properties>
    <property name="name" value="MARKET"/>

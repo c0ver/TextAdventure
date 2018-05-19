@@ -18,83 +18,108 @@ public class Plot {
 	public static final int PLOT_HEIGHT = 32;
 	public static final int PLOT_WIDTH = 32;
 
-	private static final String SQUARE_TEXT_FILE = "assets/squareText.json";
-	private static final String PLOT_1_FILE = "assets/plot_Tile Layer 1.csv";
-    private static final String PLOT_2_FILE = "assets/plot_Tile Layer 2.csv";
+	// number of layers the plot has
+	private static final int PLOT_LAYER_COUNT = 2;
+
+	private static final String TILE_TEXT_FILE = "assets/tileText.json";
+	private static final String PLOT_FILE = "assets/plot_Tile Layer %d.csv";
 
 	private static final String PLOT_FILE_ERROR =
-            "ERROR: %s was not found or could not be read properly\n";
+            "ERROR: %s %d was not found or could not be read properly\n";
 	private static final String PLOT_SIZE_ERROR =
             "ERROR: Plot does not match given HEIGHT AND WIDTH";
-	private static final String SQUARE_NAME_ERROR =
-            "ERROR: %s not found in squareList";
+	private static final String TILE_NAME_ERROR =
+            "ERROR: %s not found in tileList";
 
-    // matrix of plot that contains appropriate names from squareList
-	private static Square[][] plot;
+    // matrix of entire map of the game
+	private static Tile[][] plot;
 	
-	// list of total possible squares
-	private static List<Square> squareList;
+	// list of total possible tiles
+	private static List<Tile> tileList;
 	
 	public static void createPlot() {
-		plot = new Square[PLOT_HEIGHT][PLOT_WIDTH];
+		plot = new Tile[PLOT_HEIGHT][PLOT_WIDTH];
 		
-		parseSquareText();
+		parseTileText();
 		parsePlot();
 	}
-	
-	private static void parseSquareText() {
+
+	/*
+	 * Creates a separate tile for every unique description
+	 */
+	private static void parseTileText() {
 
         Gson gson = new Gson();
-        FileReader squareGSON;
+        FileReader tileGSON;
         try {
-            squareGSON = new FileReader(SQUARE_TEXT_FILE);
+            tileGSON = new FileReader(TILE_TEXT_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return;
         }
-        JsonObject squareJSON = gson.fromJson(squareGSON, JsonObject.class);
+        JsonObject tileJSON = gson.fromJson(tileGSON, JsonObject.class);
 
-        squareList = new ArrayList<Square>();
-        for(Map.Entry<String, JsonElement> element : squareJSON.entrySet()) {
-            Square square = gson.fromJson(element.getValue(), Square.class);
-            square.setName(element.getKey());
-            squareList.add(square);
+        tileList = new ArrayList<Tile>();
+        for(Map.Entry<String, JsonElement> element : tileJSON.entrySet()) {
+            Tile tile = gson.fromJson(element.getValue(), Tile.class);
+            tile.setID(element.getKey());
+            tileList.add(tile);
+        }
+	}
+
+    /*
+     *  Has to parse through each map layer
+     *  Go through the primary layer first, then others added on
+     */
+	private static void parsePlot() {
+		Scanner scanner;
+		for(int i = 1; i <= PLOT_LAYER_COUNT; i++) {
+
+            try {
+                String file = String.format(PLOT_FILE, i);
+                scanner = new Scanner(new File(file));
+            } catch (FileNotFoundException e) {
+                System.err.printf(PLOT_FILE_ERROR, PLOT_FILE, i);
+                return;
+            }
+
+            /* input tiles into game based on x, y coordinates */
+            int y = 0;
+            while (scanner.hasNextLine()) {
+                String[] temp = scanner.nextLine().split(",");
+
+                if (temp.length != PLOT_WIDTH) {
+                    System.err.println(PLOT_SIZE_ERROR);
+                }
+
+                for (int x = 0; x < PLOT_WIDTH; x++) {
+
+                    // no tile in csv file == -1
+                    if (temp[x].equals("-1")) {
+                        continue;
+                    }
+
+                    int index = tileList.indexOf(new Tile(temp[x]));
+
+                    if (index == -1) {
+                        System.err.printf(TILE_NAME_ERROR, temp[x]);
+                        return;
+                    }
+
+                    // first pass through
+                    if (plot[y][x] == null) {
+                        plot[y][x] = new Tile(tileList.get(index));
+                    } else {
+                        plot[y][x].addTile(tileList.get(index));
+                    }
+                }
+                y++;
+            }
+            scanner.close();
         }
 	}
 	
-	private static void parsePlot() {
-		Scanner scanner;
-		try {
-			scanner = new Scanner(new File(PLOT_1_FILE));
-		} catch (FileNotFoundException e) {
-			System.err.printf(PLOT_FILE_ERROR, PLOT_1_FILE);
-			return;
-		}
-		
-		/* input squares into game based on x, y coordinates */
-		int y = 0;
-		while(scanner.hasNextLine()) {
-			String[] temp = scanner.nextLine().split(",");
-			
-			if(temp.length != PLOT_WIDTH) {
-				System.err.println(PLOT_SIZE_ERROR);
-			}
-			for(int x = 0; x < PLOT_WIDTH; x++) {
-				int index = squareList.indexOf(new Square(temp[x]));
-
-				if(index == -1) {
-				    System.err.printf(SQUARE_NAME_ERROR, temp[x]);
-				    return;
-                }
-
-				plot[y][x] = new Square(squareList.get(index));
-			}
-			y++;
-		}
-		scanner.close();
-	}
-	
-	public static Square getSquare(int x, int y) {
+	public static Tile getTile(int x, int y) {
 		return plot[y][x];
 	}
 	

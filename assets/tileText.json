@@ -1,0 +1,82 @@
+{
+  "PLAINS": {
+    "dangerLevel": 1,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "LIGHT_FOREST": {
+    "dangerLevel": 1,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "MEDIUM_FOREST": {
+    "dangerLevel": 1,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "DEEP_FOREST": {
+    "dangerLevel": 1,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "DARK_FOREST": {
+    "dangerLevel": 1,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "FARM_LAND": {
+    "dangerLevel": 0,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "WATER": {
+    "dangerLevel": 1,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "MOUNTAIN": {
+    "dangerLevel": 1,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "ROAD": {
+    "dangerLevel": 0,
+    "description": "A road that leads from one place to the next. Who knows where this one might lead to."
+  },
+  "TOWN": {
+    "dangerLevel": 0,
+    "description": "A castle fit for kings. You might meet some royalty here."
+  },
+  "CITY": {
+    "dangerLevel": 0,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "SLUM": {
+    "dangerLevel": 1,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "CHATEAU": {
+    "dangerLevel": 0,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "INN": {
+    "dangerLevel": 0,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "FARM_HOUSE": {
+    "dangerLevel": 0,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "MARKET": {
+    "dangerLevel": 0,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "CHURCH": {
+    "dangerLevel": 0,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "CASTLE": {
+    "dangerLevel": 0,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "TREE": {
+    "dangerLevel": 0,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "STONE": {
+    "dangerLevel": 0,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  }
+}

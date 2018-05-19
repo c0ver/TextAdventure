@@ -2,7 +2,7 @@ package main;
 
 import Events.Trade;
 import Plot.Plot;
-import Plot.Square;
+import Plot.Tile;
 
 import Things.Entity;
 
@@ -43,8 +43,8 @@ public class Something {
 		return yPosition;
 	}
 	
-	public Square getLocation() {
-		return Plot.getSquare(xPosition, yPosition);
+	public Tile getLocation() {
+		return Plot.getTile(xPosition, yPosition);
 	}
 	
 	public String getDescription() {
