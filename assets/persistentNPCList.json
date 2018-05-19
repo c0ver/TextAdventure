@@ -1,0 +1,20 @@
+{
+  "Wandering Salesman": {
+    "xPosition": 15,
+    "yPosition": 16,
+    "description": "His description",
+    "inventory": [
+      "Sword",
+      "Potion"
+    ]
+  },
+  "Smith": {
+    "x": 16,
+    "y": 16,
+    "description": "Smith's Description",
+    "inventory": [
+      "Axe",
+      "Sword"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "TREE": {
+    "name": "TREE",
+    "dangerLevel": 1,
+    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  },
+  "ROAD": {
+    "dangerLevel": 0,
+    "description": "A road that leads from one place to the next. Who knows where this one might lead to."
+  },
+  "HOUSE": {
+    "dangerLevel": 0,
+    "description": "Someone lives in this house. Hopefully, you're invited. Otherwise, you might be in for a great encounter!"
+  },
+  "STONE": {
+    "dangerLevel": 0,
+    "description": "A castle fit for kings. You might meet some royalty here."
+  }
+}

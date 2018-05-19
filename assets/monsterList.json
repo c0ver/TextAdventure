@@ -1,0 +1,20 @@
+{
+  "bear": {
+    "description": "A huge bear",
+    "level": 1,
+    "statMultiplier": 0.8,
+    "baseAttack": 2,
+    "inventory": [
+      "Animal Fur"  
+    ]
+  },
+  "wolf": {
+    "description": "A big grey wolf",
+    "level": 1,
+    "statMultiplier": 0.5,
+    "baseAttack": 1.5,
+    "inventory": [
+      "Animal Fur"  
+    ]
+  }
+}
