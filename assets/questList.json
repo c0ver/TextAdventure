@@ -1,0 +1,120 @@
+{
+  "OPENING_SCENE": {
+    "name": "Opening Scene",
+    "story": [
+      {
+        "name": "Enter a new world",
+        "timeLength": 0,
+        "eventSeries": [
+          {
+            "type": "NEXT",
+            "next": -1,
+            "text": "You have been an apprentice to Master for most of your teen years. Today is the day that you graduate from being an apprentice with Master in (skill/job). Though you still have much to learn from him, life experience as an independent man in the world will teach you much more than he can.\n\nYou walk out of Master’s shop into the world as new man, determined to make your own choices in life. The whole world is at your fingertips, if only you choose to reach out.\n\nWhere do you decide to go?"
+          }
+        ],
+        "rewards": [
+          "Silver",
+          1,
+          "Dagger",
+          1
+        ]
+      }
+    ]
+  },
+  "QUEST_1": {
+    "name": "Caravan to Prin",
+    "story": [
+      {
+        "name": "Quest details",
+        "timeLength": 0.5,
+        "eventSeries": [
+          {
+            "type": "CHOICE",
+            "next": [
+              1,
+              2
+            ],
+            "text": "At the city gates, a small company of soldiers seem to be gathering supplies and preparing a trip. Their movements seemed well oiled and practiced, suggesting that they have done this trip many times before.\nYou see a soldier on break and walk up to him. “I saw the post in the market that asked for help. What would that entail?”\n\tThe soldier you spoke to grunted and pointed to a tent in the middle of the grounds, “The captain will be in there. Talk to him, and he’ll tell you everything you’ll need to know.”\n\tThanking him, you walk to the tent and brush aside a door flap. Inside, the room was spartan in nature; the only furniture was a single desk and chair with a single candle lighting the desk in which a heavy set man sat, squinting at a piece of parchment. You patiently wait a few minutes before he acknowledges you and looks up.\n\t“What do you want?”\n\tHis tone is rather brusque considering the fact that he had posted a notice asking for help, but you brush it off. Reading such small script in barely visible light would dour anyone’s day.\n\t“I’m here about the notice you posted about your upcoming journey. Do you have any further details such as what I’ll be doing or how long the trip is expected to take?”\n\tHe looks you up and down. “We’re looking for some extra protection. Know how to protect yourself?”\n\tYou shrug, “I grew up on a farm and had to constantly deal with wild animals. I’ve also had some training with spears and staves.”\n\tHe nodded. “The trip will take a couple days for both ways, mainly because of some heavy cargo. We don’t expect to meet any trouble, but you never know on the roads. We’ll be paying four copper for each day on the road. You will get paid two times, when we get to Pirn and when we get back, but at Pirn, you’ll get paid half the usual amount. Just incentive to come back with us. I don’t want to have to search for more men.”\n\t“Four copper a day?” You protest, “You’re asking me to risk my life for something barely enough to feed me for the day?”\n\t“We will be providing the grub and equipment for you to use. I think it to be fair compensation.”\n\tHe arches an eyebrow at you, awaiting your response.\n  "
+          },
+          {
+            "type": "NEXT",
+            "next": [
+              -1
+            ],
+            "text": "“Sure, I’ll take the job,” you say.\nHe grunted, “Come back to me before before daybreak tomorrow,” turning away to continue his work.\nYou step outside. Four copper a day wasn’t much, but it could be a good way to start. After all, any income was better than none, provided you didn’t die on the job."
+          },
+          {
+            "type": "NEXT",
+            "next": [
+              -1
+            ],
+            "text": "“I’ll pass on this one,” you say.\nHe grunted, “The job will still be open until tonight if you change your mind.”\nFour copper a day for risking your life doesn’t seem like a good choice for now."
+          }
+        ]
+      },
+      {
+        "name": "Begin Quest",
+        "timeLength": 0.5,
+        "eventSeries": [
+          {
+            "type": "NEXT",
+            "next": [
+              1
+            ],
+            "text": "You get to the supply wagon in the bright early morning, reporting to the captain as he directed. He looks up at you as you walk in his tent, “Good. You’re here on time. Go to the quartermaster to get outfitted. After that, report to Lieutenant Arold for further duties. We’ll be leaving at eight.”"
+          },
+          {
+            "type": "NEXT",
+            "next": [
+              -1
+            ],
+            "text": "You leave him and go to the quartermaster. As you near him, you take note of the multitude of weapons set in in racks around him: all kinds of swords, long spears, intricately carved quarterstaffs, small daggers, and crossbows.\n“You one of the new hires?” he asks brusquely, barely sparing you a glance.\n\t“Yes, the captain sent me, “ you reply, taken aback by his rudeness.\n\tHe shoves a gambeson and a spear into your arms, almost nicking you on your arm with the spear point in the shuffle. “Your name?”\n\t“%s”\n\t“We’ll be expecting those back at the end of the trip.”\nHe pulls out a book from his side and jots down a few notes before turning away from you, a clear dismissal.\n\tGained 1x Gambeson\n\tGained 1x Spear\n"
+          }
+        ],
+        "rewards": [
+          "Spear",
+          1,
+          "Gambeson",
+          1
+        ]
+      },
+      {
+        "name": "Arrive at Pirn",
+        "timeLength": 84,
+        "eventSeries": [
+          {
+            "type": "NEXT",
+            "next": [
+              1
+            ],
+            "text": "You make your way to Lieutenant Arold. The man certainly looks fit to be in his occupation. He is in the middle of polishing his armor, a expensive looking set of steel plates that covered the important parts of his body. His hands carefully rubbed an oiled cloth across the surface to prevent rust from taking hold.\n\tHe looks up at you while his hands never stop their movements.\n\t“The captain told me to report to you.”\n\tHe takes his time to look you over, judging the capabilities you have. Eventually, he nods, seemingly satisfied.\n“Take a seat by the others,” he nods towards a group of men. “Be ready for the order to set out.”\n\tYou walk to the group lounging around a campfire. Most of them seem like soldier material, judging from the more professional equipment surrounding them while two others look pretty similar you, with a spear and a matching gambeson. The two look pretty similar in appearance. Probably related somehow. You take a seat by them, taking the chance to introduce yourself.\n\t“I’m %s, you fellows new here as well?”\n\tThey take their turns shaking your hand. “Olli.” “Otti.”\n\tOlli tells you, “We’re brothers. Just looking to make some extra cash for family.”\n\tYou nod, “I’m just looking to see what’s outside this area. Get out of this town for once.”\n\tSuddenly, a bell rings across the camp. Everyone starts to put on armor and prepare to go. Lieutenant Arold comes over.\n\t“We’ll be taking the rear of the caravan. Olli, take the right. Otti, you’re on the left. %s, the back with me. Everyone else knows their positions. Let’s get moving.\n\tYou nod and start walking. Time to earn your pay.\n"
+          },
+          {
+            "type": "NEXT",
+            "next": [
+              2
+            ],
+            "text": "The journey there was as uneventful as could be. Though you had never left the town of Westwend, the scenery wasn’t that much different front what you saw on the road.\nThe captain hadn’t lied about the slow pace. Through the chatter of the soldiers, you learned you could get to Pirn in a day and a half normall, or within a day if you really were in a hurry with a light load. Still, you were got enough decent food and was going to get paid at the end so that wasn’t bad. Also, the information about the world you could pick up from the experienced soldiers was a goldmine.\nNonetheless, you got there at the end of the third day and set up camp with the others. Luckily for you, Lieutenant Arold announced that everyone will be able to take the next day off as the captain had business to attend to. You eventually make your way to the quartermaster to get paid your six copper. After adding that to your money pouch, you settle beside the fire to sleep for the night.\n"
+          },
+          {
+            "type": "NEXT",
+            "next": [
+              -1
+            ],
+            "text": "You wake up bright and early, ready to explore in and around Pirn."
+          }
+        ],
+        "rewards": [
+          "Copper",
+          6
+        ],
+        "expenses": [
+          "Spear",
+          1,
+          "Gambeson",
+          1
+        ]
+      }
+    ]
+  }
+}

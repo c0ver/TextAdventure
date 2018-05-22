@@ -1,20 +1,18 @@
 package Events;
 
-import main.Event;
-
 import static main.Game.me;
 
-public class Default extends Event {
+public class Default extends Event  {
 	
 	private static final String[] BUTTON_SET = {"Interact", "North",
 			"Inventory", "West", "South", "East"};
 
-	public Default(String title, String mainText, Event parentEvent) {
-		super(title, mainText, parentEvent, BUTTON_SET);
+	public Default(String title, String text, Event  nextEvent) {
+		super(title, text, nextEvent, BUTTON_SET);
 	}
 
 	@Override
-	public Event chooseNewEvent(String command) {
+	public Event  chooseNewEvent(String command) {
 
 		switch (command) {
 			case "Interact":

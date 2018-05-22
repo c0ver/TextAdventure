@@ -1,9 +1,8 @@
 package Plot;
 
 import Events.Default;
-import com.sun.xml.internal.bind.v2.model.core.ID;
-import main.Event;
-import main.Something;
+import Events.Event;
+import Things.Something;
 import Things.Entity;
 
 import java.util.ArrayList;
@@ -56,6 +55,9 @@ public class Tile {
 	
 	public Event getEvent() {
 	    Random rand = new Random();
+
+	    // increasing levels of dangerLevel increase encounter chance
+        // might want to make that increase more dangerous encounters instead
         if(rand.nextInt(100) + 1 <= encounterChance[dangerLevel]) {
             int index = rand.nextInt(Entity.getMonsterList().size());
             return Entity.fight(index);
@@ -71,7 +73,11 @@ public class Tile {
 
 	void addTile(Tile tile) {
 	    IDList.addAll(tile.IDList);
-	    description += tile.description;
+	    description += "\n\n" + tile.description;
+
+	    if(tile.dangerLevel == 0) {
+	        dangerLevel = 0;
+        }
 
 	    if(tile.thing != null) {
 	        System.err.println(LAYER_TILE_ERROR);

@@ -1,7 +1,37 @@
 {
+  "Gold": {
+    "description": "The highest form of coined currency.",
+    "rarity": "RARE",
+    "type": "MISC"
+  },
+  "Silver": {
+    "description": "A decent amount of money.",
+    "rarity": "UNCOMMON",
+    "type": "MISC"
+  },
+  "Copper": {
+    "description": "The lowest form of coined currency",
+    "rarity": "COMMON",
+    "type": "MISC"
+  },
   "Animal Fur": {
     "description": "A fur pelt harvested from a killed animal",
     "rarity": "COMMON",
     "type": "MISC"
+  },
+  "Gambeson": {
+    "description": "A padded defensive jacket constructed out of linen or wool. Can protect the wearer more than one might think.",
+    "rarity": "COMMON",
+    "type": "CLOTHING"
+  },
+  "Spear": {
+    "description": "A weapon with a long shaft and a pointed tip. A common and useful weapon due to its long reach.",
+    "rarity": "COMMON",
+    "type": "TOOL"
+  },
+  "Dagger": {
+    "description": "An tool that can be also used as an easily concealed weapon. Can be very dangerous in the right hands.",
+    "rarity": "COMMON",
+    "type": "TOOL"
   }
 }

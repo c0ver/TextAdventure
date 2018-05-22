@@ -233,7 +233,7 @@
  </tile>
  <tile id="73">
   <properties>
-   <property name="name" value="MEDIUM_FOREST"/>
+   <property name="name" value="NORMAL_FOREST"/>
   </properties>
  </tile>
  <tile id="74">
@@ -313,7 +313,7 @@
  </tile>
  <tile id="115">
   <properties>
-   <property name="name" value="FARM_HOUSE"/>
+   <property name="name" value="GRANARY"/>
   </properties>
  </tile>
  <tile id="116">

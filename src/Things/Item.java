@@ -4,7 +4,6 @@ import Items.Clothing;
 import Items.Consumable;
 import Items.Tool;
 import com.google.gson.*;
-import main.Something;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

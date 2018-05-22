@@ -3,9 +3,8 @@ package Events;
 import static main.Game.me;
 
 import Things.Entity;
-import main.Event;
 
-public class Fight extends Event {
+public class Fight extends Event  {
 
     private static final String NULL_ENEMY_ERROR = "ERROR: Enemy is null";
 
@@ -19,9 +18,9 @@ public class Fight extends Event {
     /* halves the incoming damage */
     private static final double defenseModifier = 0.5;
 
-    public Fight(String title, String mainText, Entity npc, Event
-                 parentEvent) {
-        super(title, mainText, parentEvent, BUTTON_SET);
+    public Fight(String title, String text, Entity npc, Event
+                 nextEvent) {
+        super(title, text, nextEvent, BUTTON_SET);
         other = npc;
     }
 
@@ -44,7 +43,7 @@ public class Fight extends Event {
     }
 
     @Override
-    public Event chooseNewEvent(String command) {
+    public Event  chooseNewEvent(String command) {
         /* for now, the monster will do the same as the player */
         Entity[] participants = {me, other};
 

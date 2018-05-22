@@ -2,7 +2,9 @@ package main;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import Events.Event;
 import Plot.Plot;
+import Quests.Quest;
 import Things.Entity;
 import Things.Item;
 
@@ -114,6 +116,7 @@ public class Game extends Application {
 			Entity.createPersistentNPCs();
 			Entity.createRandomNPCs();
 			Item.createItems();
+            Quest.parseQuest();
 		});
 		startButton.setPrefWidth(windowWidth / 5);
 		startButton.setPrefHeight(windowHeight / 8);
@@ -139,7 +142,7 @@ public class Game extends Application {
 		}
 		
 		/* The story (center) */
-		Text textWindow = new Text(event.getMainText());
+		Text textWindow = new Text(event.getText());
 		textWindow.setFont(storyFont);
 		textWindow.setWrappingWidth(windowWidth -
                 (SQUARES_SHOWN * SQUARE_SIZE * 2) - MAIN_TEXT_PADDING);

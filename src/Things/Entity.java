@@ -13,9 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import main.Game;
 import Plot.Plot;
-import main.Event;
-
-import main.Something;
+import Events.Event;
 
 import static main.Game.me;
 

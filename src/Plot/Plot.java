@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import main.Something;
+import Things.Something;
 
 public class Plot {
 	public static final int PLOT_HEIGHT = 32;

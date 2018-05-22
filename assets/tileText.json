@@ -1,82 +1,82 @@
 {
   "PLAINS": {
     "dangerLevel": 1,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "Grassy plains cover the ground wherever you look. Though the ground is as level as can be, many unknown dangers lurk underneath the cover of the long grass. During the day, you can look in any direction and see miles away with nothing blocking your view. Sometimes, you think you can catch a glimpse of something slightly above the waving stalks of grass and get the feeling something or someone is there somewhere."
   },
-  "LIGHT_FOREST": {
+  "NORMAL_FOREST": {
     "dangerLevel": 1,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
-  },
-  "MEDIUM_FOREST": {
-    "dangerLevel": 1,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "Trees surround you in every direction. Though it can be very cheerful with bright lit meadows facing the sun, do not let that distract you from reality. Even experienced hunters have been lost in these regions, giving a constant reminder to be continually vigilant for dangers. The average beast makes its home here, trapped between civilization and the deeper, deadly inner forests."
   },
   "DEEP_FOREST": {
     "dangerLevel": 1,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "Unruly trees surround you in every direction. Dangerous creatures prowl in this area, searching for prey unfortunate enough to fall into their clutches. The most seasoned of hunters occasionally venture into these parts to chance a great and costly quarry in hard times."
   },
   "DARK_FOREST": {
     "dangerLevel": 1,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "Trees surround you in every direction, making it hard to see where you are going. It is completely silent; not even the wind dares to blow to risk attracting attention. Unnatural creatures, the ones from the most frightening of the stories everyone knows, lurk here waiting to prey upon unsuspecting victims. Even the greatest explorers and warriors of our age are loathe to step into this area, knowing that one misstep could lead to a fate worse than death."
   },
-  "FARM_LAND": {
-    "dangerLevel": 0,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+  "ANCIENT_FOREST": {
+    "dangerLevel": 1,
+    "description": "ANCIENT_FOREST_PLACEHOLDER"
   },
   "WATER": {
     "dangerLevel": 1,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "WATER_PLACEHOLDER"
   },
   "MOUNTAIN": {
     "dangerLevel": 1,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "MOUNTAIN_PLACEHOLDER"
   },
   "ROAD": {
     "dangerLevel": 0,
     "description": "A road that leads from one place to the next. Who knows where this one might lead to."
   },
+  "FARM_LAND": {
+    "dangerLevel": 0,
+    "description": "Farmers have planted acres of crops needed by the nearby inhabitants. This region often acts as a barrier between civilization and the wilderness. Because of this, they sometimes attract a few wild foragers looking for easy food or occasionally a much more dangerous beast searching for more."
+  },
   "TOWN": {
     "dangerLevel": 0,
-    "description": "A castle fit for kings. You might meet some royalty here."
+    "description": "This town is on the outskirts of human civilization. There are many towns such as these, some more developed, some less, but they are all filled with people who could not live in the city, due to personal choice or the law."
   },
   "CITY": {
     "dangerLevel": 0,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "The royal family and the church rule the cities together, sharing resources and everything else in order keep power. Though this may seem rife with corruption, both parties do much to keep their public image impeccable. With the church funding their own programs helping the needy and the poor and the royal family maintaining a strict control of a standing army to protect from outside influences, there was not much talk of rebellion."
   },
   "SLUM": {
     "dangerLevel": 1,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "Shacks line the path that meanders in confusing directions. The familiar but unpleasant smell of excrement wafts to your nose. The colors here a drab and muddy; it's clear that the inhabitants of this part of town don’t care at all about what they look like. It is common for purse snatchers and muggers to work in this area. If you don’t watch your back, it could end up with a knife in it."
   },
   "CHATEAU": {
     "dangerLevel": 0,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "The houses here are clean, amazingly so. Armed guards patrol the well-maintained roads regularly, watching for any trouble that arises from potential troublemakers."
+  },
+  "GRANARY": {
+    "dangerLevel": 0,
+    "description": "This building stores the surplus food not needed at the current time. Guards are posted around this building day and night to keep anyone from tampering with it and potentially destroying the people’s food supply."
   },
   "INN": {
     "dangerLevel": 0,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
-  },
-  "FARM_HOUSE": {
-    "dangerLevel": 0,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "This is the place to stay for the night if you want a decently clean and relatively soft bed to sleep in. Otherwise, you can always sleep in the streets."
   },
   "MARKET": {
     "dangerLevel": 0,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "The area is the center of activity. Merchants and traders are all around, calling out their wares to potential customers. Actors put on public shows, hoping to entertain people enough to earn their livelihood. Also, there is a notice board filled with posts from people looking for help."
   },
   "CHURCH": {
     "dangerLevel": 0,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "CHURCH_PLACEHOLDER"
   },
   "CASTLE": {
     "dangerLevel": 0,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "CASTLE_PLACEHOLDER"
   },
   "TREE": {
     "dangerLevel": 0,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "TREE_PLACEHOLDER"
   },
   "STONE": {
     "dangerLevel": 0,
-    "description": "This place is considered unsafe. Monsters are roaming these areas at unknown intervals. Keep your guard up to avoid a costly mistake."
+    "description": "STONE_PLACEHOLDER"
   }
 }

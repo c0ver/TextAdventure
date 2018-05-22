@@ -1,10 +1,10 @@
-package main;
+package Things;
 
 import Events.Trade;
 import Plot.Plot;
 import Plot.Tile;
 
-import Things.Entity;
+import Events.Event;
 
 public class Something {
 

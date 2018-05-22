@@ -1,7 +1,6 @@
 package Events;
 
 import Things.Entity;
-import main.Event;
 
 import java.util.ArrayList;
 
@@ -9,8 +8,8 @@ public class Inventory extends Event {
 	
 	private static final String INVENTORY_TEXT = "Inventory Screen.";
 	
-	Inventory(Entity person, Event parentEvent) {
-		super("checkInventory", INVENTORY_TEXT, parentEvent);
+	Inventory(Entity person, Event nextEvent) {
+		super("checkInventory", INVENTORY_TEXT, nextEvent);
 		other = person;
 		
 		/* include an extra space for "go back" */
@@ -24,11 +23,11 @@ public class Inventory extends Event {
 	@Override
 	public Event chooseNewEvent(String command) {
 		if(command.equals("Go Back")) {
-			return parentEvent;
+			return nextEvent;
 		}
 		
-		if(parentEvent instanceof Trade) {
-			return parentEvent.chooseNewEvent(command);
+		if(nextEvent instanceof Trade) {
+			return nextEvent.chooseNewEvent(command);
 		}
 
 		System.err.println(BUTTON_ERROR);
