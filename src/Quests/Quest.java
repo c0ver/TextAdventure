@@ -1,6 +1,5 @@
 package Quests;
 
-import Events.EventSequence;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

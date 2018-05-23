@@ -1,6 +1,6 @@
 package Events;
 
-import static main.Game.me;
+import static Main.Game.me;
 
 public class Default extends Event  {
 	

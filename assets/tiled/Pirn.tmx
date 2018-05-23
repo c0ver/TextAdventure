@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="2018.04.18" orientation="orthogonal" renderorder="right-down" width="3" height="3" tilewidth="64" tileheight="64" infinite="0" nextobjectid="1">
+ <tileset firstgid="1" source="used_tiles/medieval_tilesheet.tsx"/>
+ <layer name="Terrain" width="3" height="3">
+  <data encoding="csv">
+3,3,3,
+3,3,3,
+3,3,3
+</data>
+ </layer>
+ <layer name="Structures" width="3" height="3">
+  <data encoding="csv">
+113,113,113,
+118,0,113,
+119,117,117
+</data>
+ </layer>
+</map>

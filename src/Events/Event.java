@@ -1,15 +1,15 @@
 package Events;
 
-import static main.Game.windowHeight;
-import static main.Game.windowWidth;
-import static main.Game.displayEvent;
-
 import java.util.ArrayList;
 
 import Things.Entity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+
+import static Main.Game.displayEvent;
+import static Main.Game.windowHeight;
+import static Main.Game.windowWidth;
 
 public abstract class Event implements EventHandler<ActionEvent> {
 

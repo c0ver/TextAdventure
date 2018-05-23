@@ -1,13 +1,16 @@
-package main;
+package Main;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import Events.Event;
 import Plot.Plot;
+import Plot.Tile;
 import Quests.Quest;
 import Things.Entity;
 import Things.Item;
 
+import Things.Village;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -37,32 +40,36 @@ public class Game extends Application {
 	private static final Font storyFont = new Font("Arial", 20);
 	private static final Font infoFont = new Font("Arial", 30);
 
-	private static final String PLOT_FILE = "assets/plot.png";
-	private static final String SQUARE_FILE = "assets/square.jpeg";
-
-	private static final int SQUARE_SIZE = 64;
-
-	/* needs to be odd */
-    public static final int SQUARES_SHOWN = 5;
-
     /* increase space between map and mainText */
     private static final int MAIN_TEXT_PADDING = 50;
 
-    /* for alignment of player plot */
+	private static Stage window;
+	public static int windowWidth;
+    public static int windowHeight;
+
+    public static boolean debug = true;
+
+
+    /* Main.Game stuff */
+    public static Entity me;
+
+
+    /* map stuff */
+    private static final String PLOT_FILE = "assets/plot/%s.png";
+	private static final String SQUARE_FILE = "assets/square.jpeg";
+	private static final String MAIN_PLOT = "plot";
+	private static final int MAIN_PLOT_SIZE = 32;
+	private static final int SQUARE_SIZE = 64;
+    public static final int SQUARES_SHOWN = 5; // needs to be odd
+    public static Plot mainPlot;
+
+    // for alignment of playerPlot
     private static final int CENTER = 0;
     private static final int LEFT = -1;
     private static final int RIGHT = 1;
     private static final int TOP = -1;
     private static final int BOTTOM = 1;
 
-	private static Stage window;
-	
-	public static Entity me;
-
-	public static int windowWidth;
-    public static int windowHeight;
-
-    public static boolean debug = true;
 
     public static void main(String[] args) {
 		launch(args);
@@ -121,10 +128,16 @@ public class Game extends Application {
 		startButton.setOnAction(e -> {
 			/* initialize stuff needed for the game */
 			createCharacter();
-			Plot.createPlot();
-			Entity.createPersistentNPCs();
+
+			Plot.parseTileText();
+			mainPlot = new Plot(MAIN_PLOT, MAIN_PLOT_SIZE);
+            Village.createVillages();
+
+			//Entity.createPersistentNPCs();
 			Entity.createRandomNPCs();
+
 			Item.createItems();
+
             Quest.parseQuest();
 		});
 		startButton.setPrefWidth(windowWidth / 5);
@@ -178,7 +191,9 @@ public class Game extends Application {
 
 		Image plot, square;
 		try {
-			plot = new Image(new FileInputStream(PLOT_FILE));
+		    String plotFile = String.format(PLOT_FILE, me.getCurrentPlot()
+                    .getName());
+			plot = new Image(new FileInputStream(plotFile));
 			square = new Image(new FileInputStream(SQUARE_FILE));
 
 			System.err.println(plot.getWidth() + " " + plot.getHeight());

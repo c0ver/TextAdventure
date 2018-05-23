@@ -1,4 +1,4 @@
-package Events;
+package Quests;
 
 import java.util.List;
 

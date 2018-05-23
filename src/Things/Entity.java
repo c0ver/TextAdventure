@@ -7,15 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
-
-import Events.Fight;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import main.Game;
-import Plot.Plot;
+
+import Events.Fight;
 import Events.Event;
 
-import static main.Game.me;
+import static Main.Game.me;
 
 public class Entity extends Something {
     private static List<Entity> monsterList, persistentNPCList;
@@ -56,7 +54,7 @@ public class Entity extends Something {
         money = START_MONEY;
         statMultiplier = 1;
         tempModifier = 1;
-        xPosition = yPosition = 2;
+        xPosition = yPosition = 0;
 
         stats = new int[TOTAL_STAT_COUNT];
         for(int i = 0; i < TOTAL_STAT_COUNT; i++) {
@@ -178,7 +176,7 @@ public class Entity extends Something {
 	}
 	
 	public void goDown() {
-		if(yPosition == Plot.PLOT_HEIGHT - 1) return;
+		if(yPosition == getCurrentPlot().getSize() - 1) return;
 		yPosition++;
 	}
 	
@@ -188,7 +186,7 @@ public class Entity extends Something {
 	}
 	
 	public void goRight() {
-		if(xPosition == Plot.PLOT_WIDTH - 1) return;
+		if(xPosition == getCurrentPlot().getSize() - 1) return;
 		xPosition++;
 	}
 
@@ -275,10 +273,11 @@ public class Entity extends Something {
      */
     private void finishInitialization(String name) {
 
-        /* for persistent NPCs */
+        /*
+        // for persistent NPCs
         if (xPosition != 0 || yPosition != 0) {
             Plot.addSomething(this);
-        }
+        }*/
 
         this.name = name;
         stats = new int[TOTAL_STAT_COUNT];

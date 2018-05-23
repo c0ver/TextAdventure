@@ -1,6 +1,6 @@
 package Events;
 
-import static main.Game.me;
+import static Main.Game.me;
 import Things.Entity;
 
 public class Trade extends Event {

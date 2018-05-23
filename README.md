@@ -1,4 +1,4 @@
-# Game
+# Main.Game
 A text adventure game written using javafx
 
 Goal:

@@ -1,6 +1,7 @@
 package Things;
 
 import Events.Trade;
+import static Main.Game.mainPlot;
 import Plot.Plot;
 import Plot.Tile;
 
@@ -11,6 +12,8 @@ public class Something {
 	protected String name, description;
 	protected int xPosition, yPosition;
 
+	private Plot currentPlot;
+
 	protected Something(String name) {
 	    this.name = name;
     }
@@ -18,6 +21,7 @@ public class Something {
 	protected Something(String name, String description) {
 		this.name = name;
 		this.description = description;
+		currentPlot = mainPlot;
 	}
 
 	protected Something(String name, String description, int x, int y) {
@@ -30,6 +34,8 @@ public class Something {
 	    name = toCopy.name;
 	    description = toCopy.description;
     }
+
+    public void setName(String name) { this.name = name; }
 
 	public String getName() {
 		return name;
@@ -44,7 +50,12 @@ public class Something {
 	}
 	
 	public Tile getLocation() {
-		return Plot.getTile(xPosition, yPosition);
+	    Tile location = currentPlot.getTile(xPosition, yPosition);
+		if(location.getThing() instanceof Village) {
+            enterVillage((Village) location.getThing());
+        }
+
+        return currentPlot.getTile(xPosition, yPosition);
 	}
 	
 	public String getDescription() {
@@ -54,8 +65,17 @@ public class Something {
 	public Event getEvent(Event parentEvent) {
 		return (new Trade(name, description, (Entity) this, parentEvent));
 	}
-	
-	@Override
+
+    public Plot getCurrentPlot() {
+        return currentPlot;
+    }
+
+    public void enterVillage(Village village) {
+        currentPlot = village.getPlot();
+        xPosition = yPosition = 0;
+    }
+
+    @Override
 	public String toString() {
 		return name;
 	}

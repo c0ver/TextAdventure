@@ -39,8 +39,6 @@ public class Item extends Something {
 	    this.value = value;
 	}
 
-	void setName(String name) { this.name = name; }
-
 	int getValue() {
 		return value;
 	}

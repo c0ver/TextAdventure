@@ -21,14 +21,14 @@ public class Tile {
 
     private static final int[] encounterChance = {0, 20, 50};
 
-    private int dangerLevel;
-
     // IDList.indexOf(0) will be primary tile
     private List<String> IDList;
 
     private String description;
 
     private Something thing;
+
+    private int dangerLevel;
 
     // to be used in indexOf comparison
     Tile(String ID) {
@@ -70,6 +70,10 @@ public class Tile {
 
         return new Default(title.toString(), description, null);
 	}
+
+	public Something getThing() {
+        return thing;
+    }
 
 	void addTile(Tile tile) {
 	    IDList.addAll(tile.IDList);

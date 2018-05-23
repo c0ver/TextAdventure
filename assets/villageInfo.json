@@ -1,11 +1,28 @@
 {
-  "Pirn": {
-    "noticeBoard": [
-      "PROPAGANDA"]
-  },
   "Westwend": {
+    "size": 3,
+    "xPosition": 2,
+    "yPosition": 2,
+    "description": "This is Westwend.",
     "noticeBoard": [
       "PROPAGANDA",
-      "QUEST_1"]
+      "QUEST_1"
+    ]
+  },
+  "Pirn": {
+    "size": 3,
+    "xPosition": 29,
+    "yPosition": 2,
+    "description": "This is Pirn.",
+    "noticeBoard": [
+      "PROPAGANDA"
+    ]
+  },
+  "Taedmorden": {
+    "size": 6,
+    "xPosition": 29,
+    "yPosition": 29,
+    "description": "This is Taedmorden.",
+    "noticeBoard": []
   }
 }
