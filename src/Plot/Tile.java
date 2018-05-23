@@ -54,14 +54,14 @@ public class Tile {
 	}
 	
 	public Event getEvent() {
-	    Random rand = new Random();
+	    /*Random rand = new Random();
 
 	    // increasing levels of dangerLevel increase encounter chance
         // might want to make that increase more dangerous encounters instead
         if(rand.nextInt(100) + 1 <= encounterChance[dangerLevel]) {
             int index = rand.nextInt(Entity.getMonsterList().size());
             return Entity.fight(index);
-        }
+        }*/
 
         StringBuilder title = new StringBuilder();
         for(String ID : IDList) {

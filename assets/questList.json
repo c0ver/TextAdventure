@@ -8,7 +8,7 @@
         "eventSeries": [
           {
             "type": "NEXT",
-            "next": -1,
+            "next": [-1],
             "text": "You have been an apprentice to Master for most of your teen years. Today is the day that you graduate from being an apprentice with Master in (skill/job). Though you still have much to learn from him, life experience as an independent man in the world will teach you much more than he can.\n\nYou walk out of Master’s shop into the world as new man, determined to make your own choices in life. The whole world is at your fingertips, if only you choose to reach out.\n\nWhere do you decide to go?"
           }
         ],

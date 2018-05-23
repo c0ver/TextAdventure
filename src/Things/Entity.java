@@ -56,7 +56,7 @@ public class Entity extends Something {
         money = START_MONEY;
         statMultiplier = 1;
         tempModifier = 1;
-        xPosition = yPosition = Plot.PLOT_WIDTH / 2;
+        xPosition = yPosition = 2;
 
         stats = new int[TOTAL_STAT_COUNT];
         for(int i = 0; i < TOTAL_STAT_COUNT; i++) {
@@ -173,22 +173,22 @@ public class Entity extends Something {
     }
 
 	public void goUp() {
-		if(yPosition == Game.SQUARES_SHOWN / 2) return;
+		if(yPosition == 0) return;
 		yPosition--;
 	}
 	
 	public void goDown() {
-		if(yPosition == Plot.PLOT_HEIGHT - 1 - Game.SQUARES_SHOWN / 2) return;
+		if(yPosition == Plot.PLOT_HEIGHT - 1) return;
 		yPosition++;
 	}
 	
 	public void goLeft() {
-		if(xPosition == Game.SQUARES_SHOWN / 2) return;
+		if(xPosition == 0) return;
 		xPosition--;
 	}
 	
 	public void goRight() {
-		if(xPosition == Plot.PLOT_WIDTH - 1 - Game.SQUARES_SHOWN / 2) return;
+		if(xPosition == Plot.PLOT_WIDTH - 1) return;
 		xPosition++;
 	}
 

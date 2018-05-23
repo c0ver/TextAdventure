@@ -28,7 +28,7 @@ public abstract class Event implements EventHandler<ActionEvent> {
 	// texts of the setting
 	private String title, text;
 
-	private Button[] buttonSet;
+	private transient Button[] buttonSet;
 
 	protected Entity other;
 

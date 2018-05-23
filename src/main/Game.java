@@ -41,17 +41,26 @@ public class Game extends Application {
 	private static final String SQUARE_FILE = "assets/square.jpeg";
 
 	private static final int SQUARE_SIZE = 64;
+
+	/* needs to be odd */
     public static final int SQUARES_SHOWN = 5;
 
     /* increase space between map and mainText */
     private static final int MAIN_TEXT_PADDING = 50;
 
+    /* for alignment of player plot */
+    private static final int CENTER = 0;
+    private static final int LEFT = -1;
+    private static final int RIGHT = 1;
+    private static final int TOP = -1;
+    private static final int BOTTOM = 1;
+
 	private static Stage window;
 	
 	public static Entity me;
 
-	public static double windowWidth;
-    public static double windowHeight;
+	public static int windowWidth;
+    public static int windowHeight;
 
     public static boolean debug = true;
 
@@ -63,8 +72,8 @@ public class Game extends Application {
 	public void start(Stage primaryStage) {
 		// get the size of the main monitor
 		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-		windowWidth = screenBounds.getWidth();
-		windowHeight = screenBounds.getHeight();
+		windowWidth = (int) screenBounds.getWidth();
+		windowHeight = (int) screenBounds.getHeight();
 		
 		// shallow copy
 		window = primaryStage;
@@ -164,6 +173,9 @@ public class Game extends Application {
         otherInfoWindow.setMinWidth(SQUARES_SHOWN * SQUARE_SIZE);
 
 		StackPane playerPlot = new StackPane();
+        playerPlot.setMinWidth(SQUARES_SHOWN * SQUARE_SIZE);
+        playerPlot.setMinHeight(SQUARES_SHOWN * SQUARE_SIZE);
+
 		Image plot, square;
 		try {
 			plot = new Image(new FileInputStream(PLOT_FILE));
@@ -179,21 +191,61 @@ public class Game extends Application {
 		/* PixelReader allows cropping of image */
 		PixelReader reader = plot.getPixelReader();
 
+		/* for choosing alignment of the playerPlot */
+        int horiz = CENTER;
+        int vert = CENTER;
+
 		/* choose starting position */
 		int x_Offset = SQUARE_SIZE * (me.getX() - SQUARES_SHOWN / 2);
 		int y_Offset = SQUARE_SIZE * (me.getY() - SQUARES_SHOWN / 2);
-		if(x_Offset < 0) { x_Offset = 0; }
-        if(y_Offset < 0) { y_Offset = 0; }
+		int heightToShow = 0;
+		int widthToShow = 0;
+		if(x_Offset < 0) {
+		    widthToShow = x_Offset;
+		    horiz = LEFT;
+		    x_Offset = 0;
+		}
+        if(y_Offset < 0) {
+		    heightToShow = y_Offset;
+		    vert = TOP;
+		    y_Offset = 0;
+		}
 
 		/* choose how many squares to show */
-		int heightToShow = SQUARE_SIZE * SQUARES_SHOWN;
-        int widthToShow = SQUARE_SIZE * SQUARES_SHOWN;
+		heightToShow += SQUARE_SIZE * SQUARES_SHOWN;
+        widthToShow += SQUARE_SIZE * SQUARES_SHOWN;
+
+        if(x_Offset + widthToShow > plot.getWidth()) {
+            widthToShow = (int) plot.getWidth() - x_Offset;
+            horiz = RIGHT;
+        }
+        if(y_Offset + heightToShow > plot.getHeight()) {
+            heightToShow = (int) plot.getHeight() - y_Offset;
+            vert = BOTTOM;
+        }
+
+        System.err.printf("%d %d %f\n", x_Offset, widthToShow, plot.getWidth());
+
 		WritableImage newPlot = new WritableImage(reader, x_Offset, y_Offset,
                 widthToShow, heightToShow);
 
 		ImageView plotView = new ImageView(newPlot);
 		ImageView squareView = new ImageView(square);
 		playerPlot.getChildren().addAll(plotView, squareView);
+
+		if(vert != CENTER || horiz != CENTER) {
+		    Pos pos = Pos.CENTER;
+            if (vert == TOP && horiz == LEFT) pos = Pos.BOTTOM_RIGHT;
+            else if(vert == TOP && horiz == RIGHT) pos = Pos.BOTTOM_LEFT;
+            else if(vert == BOTTOM && horiz == LEFT) pos = Pos.TOP_RIGHT;
+            else if(vert == BOTTOM && horiz == RIGHT) pos = Pos.TOP_LEFT;
+            else if(vert == TOP && horiz == CENTER) pos = Pos.BOTTOM_CENTER;
+            else if(vert == BOTTOM && horiz == CENTER) pos = Pos.TOP_CENTER;
+            else if(vert == CENTER && horiz == LEFT) pos = Pos.CENTER_RIGHT;
+            else if(vert == CENTER && horiz == RIGHT) pos = Pos.CENTER_LEFT;
+
+            StackPane.setAlignment(plotView, pos);
+        }
 
 		/* add location information */
 		String locationText = String.format("(%d, %d)", me.getX(), me.getY());
