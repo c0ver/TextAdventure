@@ -5,12 +5,11 @@ import java.io.FileNotFoundException;
 
 import Events.Event;
 import Plot.Plot;
-import Plot.Tile;
 import Quests.Quest;
 import Things.Entity;
 import Things.Item;
 
-import Things.Village;
+import Things.Place;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -58,11 +57,11 @@ public class Game extends Application {
     /* map stuff */
     private static final String PLOT_FILE = "assets/plot/%s.png";
     private static final String SQUARE_FILE = "assets/square.jpeg";
-    private static final String MAIN_PLOT = "plot";
-    private static final int MAIN_PLOT_SIZE = 32;
+    private static final String MAIN_MAP_NAME = "mainMap";
+    private static final int MAIN_MAP_SIZE = 32;
     private static final int SQUARE_SIZE = 64;
     public static final int SQUARES_SHOWN = 5; // needs to be odd
-    public static Plot mainPlot;
+    public static Place mainMap;
 
 
     public static void main(String[] args) {
@@ -127,8 +126,8 @@ public class Game extends Application {
             createCharacter();
 
             Plot.parseTileText();
-            mainPlot = new Plot(MAIN_PLOT, MAIN_PLOT_SIZE);
-            Village.createVillages();
+            mainMap = new Place(MAIN_MAP_NAME, MAIN_MAP_SIZE, null);
+            Place.createVillages();
 
             //Entity.createPersistentNPCs();
             Entity.createRandomNPCs();
@@ -188,8 +187,8 @@ public class Game extends Application {
 
         Image plot, square;
         try {
-            String plotFile = String.format(PLOT_FILE, me.getCurrentPlot()
-                    .getName());
+            String plotFile = String.format(
+                    PLOT_FILE, me.getCurrentPlace().getName() );
             plot = new Image(new FileInputStream(plotFile));
             square = new Image(new FileInputStream(SQUARE_FILE));
 
@@ -225,17 +224,17 @@ public class Game extends Application {
         }
 
         /* choose how many squares to show */
-        int pixelsShown = SQUARE_SIZE * SQUARES_SHOWN;
-        heightToShow += pixelsShown;
-        widthToShow += pixelsShown;
+        int pixelsToShow = SQUARE_SIZE * SQUARES_SHOWN;
+        heightToShow += pixelsToShow;
+        widthToShow += pixelsToShow;
 
         if(x_Offset + widthToShow > plot.getWidth()) {
             widthToShow = (int) plot.getWidth() - x_Offset;
-            rightBorder = pixelsShown - widthToShow;
+            rightBorder = pixelsToShow - widthToShow - leftBorder;
         }
         if(y_Offset + heightToShow > plot.getHeight()) {
             heightToShow = (int) plot.getHeight() - y_Offset;
-            botBorder = pixelsShown - heightToShow;
+            botBorder = pixelsToShow - heightToShow - topBorder;
         }
 
         WritableImage newPlot = new WritableImage(reader, x_Offset, y_Offset,

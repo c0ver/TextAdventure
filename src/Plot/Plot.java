@@ -110,7 +110,7 @@ public class Plot {
 	public Tile getTile(int x, int y) {
 		return plot[y][x];
 	}
-	
+
 	public void add(Something thing) {
 		plot[thing.getY()][thing.getX()].addThing(thing);
 	}

@@ -170,24 +170,70 @@ public class Entity extends Something {
                 .getLocation().getEvent());
     }
 
+    /**
+     * Assumes that this object is already on edge of a plot
+     */
+    protected boolean canLeave() {
+
+        // if the current place doesn't a specific entrance/exit (city walls)
+	    if(!currentPlace.hasEntry()) {
+	        return true;
+        }
+
+        // every specified entry is marked with the ROAD tile
+        return currentPlace.onExitTile(xPosition, yPosition);
+    }
+
 	public void goUp() {
-		if(yPosition == 0) return;
+		if (yPosition == 0) {
+		    if(currentPlace.getParentPlace() != null && canLeave()) {
+                yPosition = currentPlace.getY();
+                xPosition = currentPlace.getX();
+                currentPlace = currentPlace.getParentPlace();
+            } else {
+		        return;
+            }
+        }
 		yPosition--;
 	}
 	
 	public void goDown() {
-		if(yPosition == getCurrentPlot().getSize() - 1) return;
-		yPosition++;
+		if (yPosition == currentPlace.getSize() - 1) {
+		    if(currentPlace.getParentPlace() != null && canLeave()) {
+                yPosition = currentPlace.getY();
+                xPosition = currentPlace.getX();
+                currentPlace = currentPlace.getParentPlace();
+            } else {
+		        return;
+            }
+        }
+        yPosition++;
 	}
 	
 	public void goLeft() {
-		if(xPosition == 0) return;
-		xPosition--;
+		if (xPosition == 0) {
+		    if(currentPlace.getParentPlace() != null && canLeave()) {
+                yPosition = currentPlace.getY();
+                xPosition = currentPlace.getX();
+                currentPlace = currentPlace.getParentPlace();
+            } else {
+		        return;
+            }
+        }
+        xPosition--;
 	}
 	
 	public void goRight() {
-		if(xPosition == getCurrentPlot().getSize() - 1) return;
-		xPosition++;
+		if (xPosition == currentPlace.getSize() - 1) {
+		    if(currentPlace.getParentPlace() != null && canLeave()) {
+                yPosition = currentPlace.getY();
+                xPosition = currentPlace.getX();
+                currentPlace = currentPlace.getParentPlace();
+            } else {
+		        return;
+            }
+        }
+        xPosition++;
 	}
 
 	public void setName(String name) { this.name = name; }

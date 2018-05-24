@@ -3,6 +3,7 @@
     "size": 3,
     "xPosition": 2,
     "yPosition": 2,
+    "hasEntry": false,
     "description": "This is Westwend.",
     "noticeBoard": [
       "PROPAGANDA",
@@ -13,6 +14,7 @@
     "size": 3,
     "xPosition": 29,
     "yPosition": 2,
+    "hasEntry": false,
     "description": "This is Pirn.",
     "noticeBoard": [
       "PROPAGANDA"
@@ -22,6 +24,7 @@
     "size": 6,
     "xPosition": 30,
     "yPosition": 30,
+    "hasEntry": true,
     "description": "This is Taedmorden.",
     "noticeBoard": []
   }

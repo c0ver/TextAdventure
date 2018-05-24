@@ -44,9 +44,43 @@ public class Tile {
 		description = new String(tile.description);
 	}
 
+    void addTile(Tile tile) {
+	    IDList.addAll(tile.IDList);
+	    description += "\n\n" + tile.description;
+
+	    if(tile.dangerLevel == 0) {
+	        dangerLevel = 0;
+        }
+
+	    if(tile.thing != null) {
+	        System.err.println(LAYER_TILE_ERROR);
+        }
+    }
+
+	void addThing(Something thing) {
+		this.thing = thing;
+	}
+
+	public Event interact(Event parentEvent) {
+		if(thing != null) {
+			return thing.getEvent(parentEvent);
+		} else {
+			System.err.println(INTERACT_ERROR);
+			return null;
+		}
+	}
+
+	public boolean searchTile(String ID) {
+	    return IDList.contains(ID);
+    }
+
 	public void setID(String ID){
-	    this.IDList = new ArrayList<>();
-	    this.IDList.add(ID);
+	    IDList = new ArrayList<>();
+	    IDList.add(ID);
+    }
+
+    public String getID(int index) {
+	    return IDList.get(index);
     }
 
 	public int getDangerLevel() {
@@ -74,32 +108,6 @@ public class Tile {
 	public Something getThing() {
         return thing;
     }
-
-	void addTile(Tile tile) {
-	    IDList.addAll(tile.IDList);
-	    description += "\n\n" + tile.description;
-
-	    if(tile.dangerLevel == 0) {
-	        dangerLevel = 0;
-        }
-
-	    if(tile.thing != null) {
-	        System.err.println(LAYER_TILE_ERROR);
-        }
-    }
-
-	void addThing(Something thing) {
-		this.thing = thing;
-	}
-	
-	public Event interact(Event parentEvent) {
-		if(thing != null) {
-			return thing.getEvent(parentEvent);
-		} else {
-			System.err.println(INTERACT_ERROR);
-			return null;
-		}
-	}
 	
 	@Override
 	public boolean equals(Object o) {
