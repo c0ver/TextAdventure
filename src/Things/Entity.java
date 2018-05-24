@@ -54,7 +54,7 @@ public class Entity extends Something {
         money = START_MONEY;
         statMultiplier = 1;
         tempModifier = 1;
-        xPosition = yPosition = 0;
+        xPosition = yPosition = 28;
 
         stats = new int[TOTAL_STAT_COUNT];
         for(int i = 0; i < TOTAL_STAT_COUNT; i++) {
