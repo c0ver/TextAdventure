@@ -1,12 +1,10 @@
 package Main;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 import Events.Event;
 import Plot.Plot;
 import Quests.Quest;
-import Things.Entity;
+import Things.Entities.Entity;
+import Things.Entities.Mobile;
 import Things.Item;
 
 import Things.Place;
@@ -33,6 +31,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 
 public class Game extends Application {
 
@@ -49,20 +50,17 @@ public class Game extends Application {
 
     public static boolean debug = true;
 
-
     /* Main.Game stuff */
-    public static Entity me;
-
+    public static Mobile me;
 
     /* map stuff */
-    private static final String PLOT_FILE = "assets/plot/%s.png";
-    private static final String SQUARE_FILE = "assets/square.jpeg";
     private static final String MAIN_MAP_NAME = "mainMap";
+    private static final String PLAYER_ICON_FILE = "assets/playerIcon.jpeg";
     private static final int MAIN_MAP_SIZE = 32;
     private static final int SQUARE_SIZE = 64;
     public static final int SQUARES_SHOWN = 5; // needs to be odd
     public static Place mainMap;
-
+    public static Image playerIcon;
 
     public static void main(String[] args) {
         launch(args);
@@ -77,9 +75,11 @@ public class Game extends Application {
 
         // shallow copy
         window = primaryStage;
+        window.setFullScreen(true);
         window.show();
 
         createMainMenu();
+        initializeGame();
     }
 
     private static void createCharacter() {
@@ -90,8 +90,10 @@ public class Game extends Application {
 
         Button nextButton = new Button("Next");
         nextButton.setOnAction(e -> {
-            me = new Entity(enterName.getText(), "My desciption");
-            displayEvent(me.getLocation().getEvent());
+            me = new Mobile(enterName.getText(), mainMap);
+
+            // into scene
+            Quest.doQuest("START");
         });
         nextButton.setPrefWidth(windowWidth / 5);
         nextButton.setPrefHeight(windowHeight / 8);
@@ -122,19 +124,7 @@ public class Game extends Application {
         // create the start button
         Button startButton = new Button("Begin");
         startButton.setOnAction(e -> {
-            /* initialize stuff needed for the game */
             createCharacter();
-
-            Plot.parseTileText();
-            mainMap = new Place(MAIN_MAP_NAME, MAIN_MAP_SIZE, null);
-            Place.createVillages();
-
-            //Entity.createPersistentNPCs();
-            Entity.createRandomNPCs();
-
-            Item.createItems();
-
-            Quest.parseQuest();
         });
         startButton.setPrefWidth(windowWidth / 5);
         startButton.setPrefHeight(windowHeight / 8);
@@ -149,6 +139,28 @@ public class Game extends Application {
         titleScene.setFill(Color.BLACK);
 
         window.setScene(titleScene);
+    }
+
+    private static void initializeGame() {
+        Plot.parseTileText();
+
+        // mainMap must be created first before villages can be added to it
+        mainMap = new Place(MAIN_MAP_NAME, MAIN_MAP_SIZE);
+        Place.createVillages();
+        Plot.inputImages();
+
+        try {
+            playerIcon = new Image(new FileInputStream(PLAYER_ICON_FILE));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Mobile.createNPCs();
+        Entity.createMonsters();
+
+        Item.createItems();
+
+        Quest.parseQuest();
     }
 
     /*
@@ -185,18 +197,7 @@ public class Game extends Application {
         playerPlot.setMinWidth(SQUARES_SHOWN * SQUARE_SIZE);
         playerPlot.setMinHeight(SQUARES_SHOWN * SQUARE_SIZE);
 
-        Image plot, square;
-        try {
-            String plotFile = String.format(
-                    PLOT_FILE, me.getCurrentPlace().getName() );
-            plot = new Image(new FileInputStream(plotFile));
-            square = new Image(new FileInputStream(SQUARE_FILE));
-
-            System.err.println(plot.getWidth() + " " + plot.getHeight());
-        } catch (FileNotFoundException e) {
-            System.err.println(e.getMessage());
-            return;
-        }
+        Image plot = Plot.getPlotImage(me.getLocation());
 
         /* format the plot according to player position */
         /* PixelReader allows cropping of image */
@@ -241,13 +242,13 @@ public class Game extends Application {
                 widthToShow, heightToShow);
 
         ImageView plotView = new ImageView(newPlot);
-        ImageView squareView = new ImageView(square);
-        playerPlot.getChildren().addAll(plotView, squareView);
+        ImageView playerIconView = new ImageView(playerIcon);
+        playerPlot.getChildren().addAll(plotView, playerIconView);
 
         StackPane.setMargin(plotView, new Insets(topBorder, rightBorder,
                 botBorder, leftBorder));
 
-        /* add location information */
+        /* addPlottable location information */
         String locationText = String.format("(%d, %d)", me.getX(), me.getY());
         Text location = new Text(locationText);
         location.setFont(infoFont);
@@ -256,7 +257,7 @@ public class Game extends Application {
         otherInfoWindow.getChildren().add(playerPlot);
         otherInfoWindow.getChildren().add(location);
 
-        /* add other information if needed */
+        /* addPlottable other information if needed */
         if(event.getOther() != null) {
             Text otherInfo = new Text(event.getOther().getInfo());
             otherInfo.setFont(infoFont);
@@ -267,7 +268,6 @@ public class Game extends Application {
         /* buttons (bottom) */
         FlowPane buttonPane = new FlowPane();
         buttonPane.getChildren().addAll(event.getButtonSet());
-
 
         BorderPane layout = new BorderPane();
         layout.setLeft(playerInfoWindow);

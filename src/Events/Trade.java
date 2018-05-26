@@ -1,7 +1,7 @@
 package Events;
 
 import static Main.Game.me;
-import Things.Entity;
+import Things.Entities.Entity;
 
 public class Trade extends Event {
 	
@@ -15,8 +15,7 @@ public class Trade extends Event {
 	
 	private boolean toBuy;
 
-	public Trade(String title, String text, Entity npc, Event
-			nextEvent) {
+	public Trade(String title, String text, Entity npc, Event nextEvent) {
 		super(title, text, nextEvent, BUTTON_SET);
 		other = npc;
 		System.err.println("Inventory size: " + other.getInventory().size());

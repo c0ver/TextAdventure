@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Item extends Something {
+public class Item extends Thing {
 
     public enum Rarity {COMMON, UNCOMMON, RARE, LEGENDARY}
     public enum Type {TOOL, CLOTHING, MISC, CONSUMABLE}
 
-    private static final String ITEM_LIST_FILE = "assets/itemList.json";
+    private static final String ITEM_LIST_FILE = "assets/json/itemList.json";
     private static final String ITEM_FILE_ERROR = "ERROR: %s was not found\n";
     private static final String ITEM_TYPE_ERROR = "ERROR: %s is not a valid " +
             "item type\n";
@@ -39,7 +39,7 @@ public class Item extends Something {
 	    this.value = value;
 	}
 
-	int getValue() {
+	public int getValue() {
 		return value;
 	}
 

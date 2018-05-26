@@ -2,8 +2,8 @@ package Plot;
 
 import Events.Default;
 import Events.Event;
-import Things.Something;
-import Things.Entity;
+import Things.Plottable;
+import Things.Entities.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class Tile {
 
     private String description;
 
-    private Something thing;
+    private Plottable plottable;
 
     private int dangerLevel;
 
@@ -52,25 +52,26 @@ public class Tile {
 	        dangerLevel = 0;
         }
 
-	    if(tile.thing != null) {
+	    if(tile.plottable != null) {
 	        System.err.println(LAYER_TILE_ERROR);
         }
     }
 
-	void addThing(Something thing) {
-		this.thing = thing;
+	void addPlottable(Plottable plottable) {
+		this.plottable = plottable;
 	}
 
 	public Event interact(Event parentEvent) {
-		if(thing != null) {
-			return thing.getEvent(parentEvent);
+		if(plottable != null) {
+			return null;
+			//return plottable.getEvent(parentEvent);
 		} else {
 			System.err.println(INTERACT_ERROR);
 			return null;
 		}
 	}
 
-	public boolean searchTile(String ID) {
+	public boolean findTile(String ID) {
 	    return IDList.contains(ID);
     }
 
@@ -88,14 +89,14 @@ public class Tile {
 	}
 	
 	public Event getEvent() {
-	    /*Random rand = new Random();
+	    Random rand = new Random();
 
 	    // increasing levels of dangerLevel increase encounter chance
         // might want to make that increase more dangerous encounters instead
         if(rand.nextInt(100) + 1 <= encounterChance[dangerLevel]) {
             int index = rand.nextInt(Entity.getMonsterList().size());
             return Entity.fight(index);
-        }*/
+        }
 
         StringBuilder title = new StringBuilder();
         for(String ID : IDList) {
@@ -105,9 +106,7 @@ public class Tile {
         return new Default(title.toString(), description, null);
 	}
 
-	public Something getThing() {
-        return thing;
-    }
+	public Plottable getPlottable() { return plottable; }
 	
 	@Override
 	public boolean equals(Object o) {

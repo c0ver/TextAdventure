@@ -1,6 +1,6 @@
 package Events;
 
-import Things.Entity;
+import Things.Entities.Entity;
 
 import java.util.ArrayList;
 

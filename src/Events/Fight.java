@@ -2,7 +2,7 @@ package Events;
 
 import static Main.Game.me;
 
-import Things.Entity;
+import Things.Entities.Entity;
 
 public class Fight extends Event  {
 
@@ -43,7 +43,7 @@ public class Fight extends Event  {
     }
 
     @Override
-    public Event  chooseNewEvent(String command) {
+    public Event chooseNewEvent(String command) {
         /* for now, the monster will do the same as the player */
         Entity[] participants = {me, other};
 
@@ -58,7 +58,7 @@ public class Fight extends Event  {
             }
         }
 
-        /* add the effects of each participant */
+        /* addPlottable the effects of each participant */
         for (Entity participant : participants) {
             actionEffects(participant, command);
         }
@@ -101,7 +101,7 @@ public class Fight extends Event  {
                         self.changeTempModifier(1);
                         me.loot(enemy);
                         return new Next("winBattle", mainText, self
-                                .getLocation().getEvent());
+                                .getCurrentTile().getEvent());
                     }
 
                     /* normal attack scene */
@@ -118,20 +118,20 @@ public class Fight extends Event  {
                     int random = (int) (Math.random() * 4 + 1);
                     switch (random) {
                         case 1:
-                            me.goUp();
+                            me.move(0, -1);
                             break;
                         case 2:
-                            me.goDown();
+                            me.move(0, 1);
                             break;
                         case 3:
-                            me.goLeft();
+                            me.move(1, 0);
                             break;
                         case 4:
-                            me.goRight();
+                            me.move(-1, 0);
                             break;
                     }
                     me.changeTempModifier(1);
-                    return me.getLocation().getEvent();
+                    return me.getCurrentTile().getEvent();
             }
         }
 

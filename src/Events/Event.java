@@ -2,16 +2,14 @@ package Events;
 
 import java.util.ArrayList;
 
-import Things.Entity;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import Things.Entities.Entity;
 import javafx.scene.control.Button;
 
 import static Main.Game.displayEvent;
 import static Main.Game.windowHeight;
 import static Main.Game.windowWidth;
 
-public abstract class Event implements EventHandler<ActionEvent> {
+public abstract class Event {
 
     private static final String NULL_EVENT_ERROR = "ERROR: null event was " +
             "given to displayNewEvent";
@@ -37,6 +35,13 @@ public abstract class Event implements EventHandler<ActionEvent> {
 	// placeholder
 	public Event() {}
 
+	/* used in creating quest events */
+	public Event(String title, String text, String[] buttonSet) {
+		this.title = title;
+		this.text = text;
+		createButtons(buttonSet);
+	}
+
 	public Event(String title, String text, Event nextEvent) {
 		// needs title and text
 		if(title == null || text == null) {
@@ -54,12 +59,13 @@ public abstract class Event implements EventHandler<ActionEvent> {
 		createButtons(buttonSet);
 	}
 
+	/* used by inventory event */
 	protected void createButtons(ArrayList<String> buttonSet) {
 		this.buttonSet = new Button[buttonSet.size()];
 		for(int x=0; x<buttonSet.size(); x++) {
 			this.buttonSet[x] = new Button(buttonSet.get(x));
 			this.buttonSet[x].setPrefSize(windowWidth * buttonWidth, windowHeight * buttonHeight);
-			this.buttonSet[x].setOnAction(this);
+			this.buttonSet[x].setOnAction(e -> buttonPress(((Button) e.getSource()).getText()));
 			//this.buttonSet[x].setUserData(nextEvent);
 		}
 	}
@@ -69,28 +75,22 @@ public abstract class Event implements EventHandler<ActionEvent> {
 		for(int x=0; x<buttonSet.length; x++) {
 			this.buttonSet[x] = new Button(buttonSet[x]);
 			this.buttonSet[x].setPrefSize(windowWidth * buttonWidth, windowHeight * buttonHeight);
-			this.buttonSet[x].setOnAction(this);
+			this.buttonSet[x].setOnAction(e -> buttonPress(((Button) e.getSource()).getText()));
 			//this.buttonSet[x].setUserData(nextEvent);
 		}
 	}
 
-	private void displayNewEvent(Event newEvent) {
-		if(newEvent == null) {
-			System.err.println(NULL_EVENT_ERROR);
-			return;
-		}
-		displayEvent(newEvent);
-	}
-
 	public abstract Event chooseNewEvent(String command);
 
-    @Override
-    public void handle(ActionEvent event) {
-        // Get the name of the button
-        String command = ((Button) event.getSource()).getText();
-
-        displayNewEvent(chooseNewEvent(command));
-    }
+    private void buttonPress(String command) {
+		Event newEvent = chooseNewEvent(command);
+		//newEvent = this;
+		if(newEvent != null) {
+			displayEvent(newEvent);
+		} else {
+			System.err.println(NULL_EVENT_ERROR);
+		}
+	}
 
     @Override
     public boolean equals(Object o) {

@@ -1,10 +1,14 @@
-package Things;
+package Things.Entities;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import Things.Item;
+import Things.Place;
+import Things.Plottable;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -15,13 +19,10 @@ import Events.Event;
 
 import static Main.Game.me;
 
-public class Entity extends Something {
-    private static List<Entity> monsterList, persistentNPCList;
+public class Entity extends Plottable {
 
-    private static final String PERSISTENT_NPC_LIST_FILE =
-            "assets/persistentNPCList.json";
     private static final String MONSTER_LIST_FILE =
-            "assets/monsterList.json";
+            "assets/json/monsterList.json";
     private static final String ENTITY_FILE_ERROR =
             "ERROR: %s was not found\n";
     private static final String ITEM_MISSING_ERROR = "ERROR: %s was not found.";
@@ -39,6 +40,10 @@ public class Entity extends Something {
 
     private static final int BASE_MULTIPLIER = 10;
 
+    private static final int startPosition = 28;
+
+    private static List<Entity> monsterList;
+
 	/* HP, Energy */
 	private int[] stats;
 
@@ -48,13 +53,12 @@ public class Entity extends Something {
 	private List<String> inventory;
 
 	/* creates the player */
-	public Entity(String name, String description) {
-        super(name, description);
+	public Entity(String name, Place location) {
+        super(name, null, location, startPosition, startPosition);
         level = 1;
         money = START_MONEY;
         statMultiplier = 1;
         tempModifier = 1;
-        xPosition = yPosition = 28;
 
         stats = new int[TOTAL_STAT_COUNT];
         for(int i = 0; i < TOTAL_STAT_COUNT; i++) {
@@ -75,13 +79,6 @@ public class Entity extends Something {
         stats = new int[TOTAL_STAT_COUNT];
 
         System.arraycopy(toCopy.stats, 0, stats, 0, TOTAL_STAT_COUNT);
-    }
-
-    @Override
-    public String toString() {
-        return name + ", " + description + ", " + level + ", " + statMultiplier
-                + ", " + baseAttack + ", " + inventory.get(0) + ", " +
-                stats[0]+ ", " + stats[1];
     }
 
 	public void gainMoney(int amount) {
@@ -134,12 +131,24 @@ public class Entity extends Something {
     }
 
 	public void removeItem(String itemName) {
-		inventory.remove(new Item(itemName));
+		inventory.remove(itemName);
 	}
+
+    public void removeItem(String itemName, int count) {
+        for(int x = 0; x < count; x++) {
+            inventory.remove(itemName);
+        }
+    }
 
 	public void addItem(String itemName) {
 		inventory.add(itemName);
 	}
+
+	public void addItem(String itemName, int count) {
+	    for(int x = 0; x < count; x++) {
+	        inventory.add(itemName);
+        }
+    }
 
 	public void loot(Entity toLoot) {
 	    inventory.addAll(toLoot.inventory);
@@ -166,77 +175,9 @@ public class Entity extends Something {
     }
 
     private Event fight() {
-	    return new Fight("fight" + name, description, new Entity(this), me
-                .getLocation().getEvent());
+	    return new Fight("fight" + getName(), getDescription(),
+                new Entity(this), me.getCurrentTile().getEvent());
     }
-
-    /**
-     * Assumes that this object is already on edge of a plot
-     */
-    protected boolean canLeave() {
-
-        // if the current place doesn't a specific entrance/exit (city walls)
-	    if(!currentPlace.hasEntry()) {
-	        return true;
-        }
-
-        // every specified entry is marked with the ROAD tile
-        return currentPlace.onExitTile(xPosition, yPosition);
-    }
-
-	public void goUp() {
-		if (yPosition == 0) {
-		    if(currentPlace.getParentPlace() != null && canLeave()) {
-                yPosition = currentPlace.getY();
-                xPosition = currentPlace.getX();
-                currentPlace = currentPlace.getParentPlace();
-            } else {
-		        return;
-            }
-        }
-		yPosition--;
-	}
-	
-	public void goDown() {
-		if (yPosition == currentPlace.getSize() - 1) {
-		    if(currentPlace.getParentPlace() != null && canLeave()) {
-                yPosition = currentPlace.getY();
-                xPosition = currentPlace.getX();
-                currentPlace = currentPlace.getParentPlace();
-            } else {
-		        return;
-            }
-        }
-        yPosition++;
-	}
-	
-	public void goLeft() {
-		if (xPosition == 0) {
-		    if(currentPlace.getParentPlace() != null && canLeave()) {
-                yPosition = currentPlace.getY();
-                xPosition = currentPlace.getX();
-                currentPlace = currentPlace.getParentPlace();
-            } else {
-		        return;
-            }
-        }
-        xPosition--;
-	}
-	
-	public void goRight() {
-		if (xPosition == currentPlace.getSize() - 1) {
-		    if(currentPlace.getParentPlace() != null && canLeave()) {
-                yPosition = currentPlace.getY();
-                xPosition = currentPlace.getX();
-                currentPlace = currentPlace.getParentPlace();
-            } else {
-		        return;
-            }
-        }
-        xPosition++;
-	}
-
-	public void setName(String name) { this.name = name; }
 
 	public int getItemValue(String itemName) {
 		int index = Item.itemList.indexOf(new Item(itemName));
@@ -249,7 +190,7 @@ public class Entity extends Something {
 	}
 
 	public String getInfo() {
-	    return String.format(ENTITY_INFO, name, getHP(), getEnergy(),
+	    return String.format(ENTITY_INFO, getName(), getHP(), getEnergy(),
 				level, money);
     }
 
@@ -271,61 +212,55 @@ public class Entity extends Something {
 
     public static List<Entity> getMonsterList() { return monsterList; }
 
-    public static List<Entity> getPersistentNPCList() { return
-            persistentNPCList; }
-
-	public static void createPersistentNPCs() {
-	    Gson gson = new Gson();
-	    FileReader npcGSON;
-        try {
-            npcGSON = new FileReader(PERSISTENT_NPC_LIST_FILE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        JsonObject npcJSON = gson.fromJson(npcGSON, JsonObject.class);
-
-        persistentNPCList = new ArrayList<>();
-        for(Map.Entry<String, JsonElement> element : npcJSON.entrySet()) {
-            Entity npc = gson.fromJson(element.getValue(), Entity.class);
-            npc.finishInitialization(element.getKey());
-            persistentNPCList.add(npc);
-        }
-	}
-
-	public static void createRandomNPCs() {
+	public static void createMonsters() {
         Gson gson = new Gson();
-	    FileReader monsterGSON;
+	    FileReader monsterJSON;
         try {
-            monsterGSON = new FileReader(MONSTER_LIST_FILE);
+            monsterJSON = new FileReader(MONSTER_LIST_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return;
         }
 
-        JsonObject monsterJSON = gson.fromJson(monsterGSON, JsonObject.class);
+        JsonObject monsterObj = gson.fromJson(monsterJSON, JsonObject.class);
 
         monsterList = new ArrayList<>();
-        for(Map.Entry<String, JsonElement> element : monsterJSON.entrySet()) {
+        for(Map.Entry<String, JsonElement> element : monsterObj.entrySet()) {
             Entity monster = gson.fromJson(element.getValue(), Entity.class);
-            monster.finishInitialization(element.getKey());
+            monster.finishGSON(element);
             monsterList.add(monster);
         }
     }
 
+
+
     /* acts like a constructor that finishes Entities read from json files.
-     * Could maybe be replaced with InstanceCreators or default constructor?
+     * Could be replaced by custom deserializer
      */
-    private void finishInitialization(String name) {
+    protected void finishGSON(Map.Entry<String, JsonElement> element) {
 
-        /*
-        // for persistent NPCs
-        if (xPosition != 0 || yPosition != 0) {
-            Plot.addSomething(this);
-        }*/
+        // for NPCs
+        if (this instanceof Mobile) {
 
-        this.name = name;
+            JsonObject obj = element.getValue().getAsJsonObject();
+            for(Place place : Place.getPlaceList()) {
+                if( place.getName().equals(obj.get("locationName").getAsString()) ) {
+                    setLocation(place);
+                }
+
+                if( place.getName().equals(obj.get("near").getAsString()) ) {
+                    int x = place.getX() + obj.get("xDelta").getAsInt();
+                    int y = place.getY() + obj.get("yDelta").getAsInt();
+                    setPosition(x, y);
+                }
+            }
+
+            getLocation().getPlot().addPlottable(this);
+        } else {
+            setPosition(-1, -1);
+        }
+
+        setName(element.getKey());
         stats = new int[TOTAL_STAT_COUNT];
         for (int i = 0; i < TOTAL_STAT_COUNT; i++) {
             stats[i] = (int) (level * statMultiplier * BASE_MULTIPLIER);

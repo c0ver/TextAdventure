@@ -1,0 +1,12 @@
+{
+  "Soldier Caravan": {
+    "locationName": "mainMap",
+    "near": "Westwend",
+    "xDelta": 0,
+    "yDelta": 1,
+    "description": "A caravan of soldiers preparing for a journey.",
+    "quests": [
+      "Caravan to Pirn"
+    ]
+  }
+}

@@ -8,7 +8,9 @@
         "eventSeries": [
           {
             "type": "NEXT",
-            "next": [-1],
+            "next": [
+              -1
+            ],
             "text": "You have been an apprentice to Master for most of your teen years. Today is the day that you graduate from being an apprentice with Master in (skill/job). Though you still have much to learn from him, life experience as an independent man in the world will teach you much more than he can.\n\nYou walk out of Master’s shop into the world as new man, determined to make your own choices in life. The whole world is at your fingertips, if only you choose to reach out.\n\nWhere do you decide to go?"
           }
         ],
@@ -17,12 +19,13 @@
           1,
           "Dagger",
           1
-        ]
+        ],
+        "expenses": []
       }
     ]
   },
   "QUEST_1": {
-    "name": "Caravan to Prin",
+    "name": "Caravan to Pirn",
     "story": [
       {
         "name": "Quest details",
@@ -50,7 +53,9 @@
             ],
             "text": "“I’ll pass on this one,” you say.\nHe grunted, “The job will still be open until tonight if you change your mind.”\nFour copper a day for risking your life doesn’t seem like a good choice for now."
           }
-        ]
+        ],
+        "rewards": [],
+        "expenses": []
       },
       {
         "name": "Begin Quest",
@@ -76,7 +81,8 @@
           1,
           "Gambeson",
           1
-        ]
+        ],
+        "expenses": []
       },
       {
         "name": "Arrive at Pirn",

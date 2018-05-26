@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import Plot.Plot;
+import Plot.Tile;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -14,51 +15,57 @@ import com.google.gson.JsonObject;
 
 import static Main.Game.mainMap;
 
-public class Place extends Something {
+public class Place extends Plottable {
 
     private static final String EXIT_TILE = "ROAD";
 
-    private static final String VILLAGE_INFO_FILE = "assets/villageInfo.json";
+    private static final String VILLAGE_INFO_FILE = "assets/json/villageInfo" +
+            ".json";
 
-    private static List<Place> placeList;
+    private static List<Place> placeList = new ArrayList<>();
 
     private List<String> noticeBoard;
     private Plot plot;
     private int size;
     private boolean hasEntry;
 
-    private Place parentPlace;
-
-    public Place(String name) {
-        super(name);
-    }
-
-    public Place(String name, int size, Place parentPlace) {
-        this(name);
+    /**
+     * Called to create the main map of the game
+     */
+    public Place(String name, int size) {
+        super(name, null, null, -1, -1);
         this.size = size;
-        this.parentPlace = parentPlace;
         plot = new Plot(name, size);
+        hasEntry = false;
+
+        placeList.add(this);
     }
 
     public boolean onExitTile(int x, int y) {
-        return plot.getTile(x, y).searchTile(EXIT_TILE);
+        return getTile(x, y).findTile(EXIT_TILE);
     }
 
     public boolean hasEntry() {
         return hasEntry;
     }
 
-    public Plot getPlot() {
-        return plot;
+    public boolean hasOuter() {
+        return getLocation() != null;
     }
 
-    public Place getParentPlace() {
-        return parentPlace;
+    public Tile getTile(int x, int y) {
+        return plot.getTile(x, y);
+    }
+
+    public Plot getPlot() {
+        return plot;
     }
 
     public int getSize() {
         return size;
     }
+
+    public static List<Place> getPlaceList() { return placeList; }
 
     public static void createVillages() {
         Gson gson = new Gson();
@@ -71,13 +78,13 @@ public class Place extends Something {
         }
         JsonObject villageJSON = gson.fromJson(villageGSON, JsonObject.class);
 
-        placeList = new ArrayList<>();
         for(Map.Entry<String, JsonElement> element : villageJSON.entrySet()) {
             Place place = gson.fromJson(element.getValue(), Place.class);
             place.setName(element.getKey());
             place.plot = new Plot(place.getName(), place.size);
-            place.parentPlace = mainMap;
-            mainMap.plot.add(place);
+            place.setLocation(mainMap);
+
+            mainMap.plot.addPlottable(place);
             placeList.add(place);
         }
     }
