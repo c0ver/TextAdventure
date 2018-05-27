@@ -84,9 +84,19 @@ public class Tile {
 	    return IDList.get(index);
     }
 
+    public String getID() {
+		StringBuilder title = new StringBuilder();
+		for(String ID : IDList) {
+			title.append(ID).append("\\");
+		}
+		return title.toString();
+	}
+
 	public int getDangerLevel() {
 		return dangerLevel;
 	}
+
+	public String getDescription() { return description; }
 	
 	public Event getEvent() {
 	    Random rand = new Random();
@@ -98,12 +108,7 @@ public class Tile {
             return Entity.fight(index);
         }
 
-        StringBuilder title = new StringBuilder();
-        for(String ID : IDList) {
-            title.append(ID).append("\\");
-        }
-
-        return new Default(title.toString(), description, null);
+        return new Default(this);
 	}
 
 	public Plottable getPlottable() { return plottable; }

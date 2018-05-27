@@ -92,8 +92,8 @@ public class Game extends Application {
         nextButton.setOnAction(e -> {
             me = new Mobile(enterName.getText(), mainMap);
 
-            // into scene
-            Quest.doQuest("START");
+            // intro scene
+            displayEvent(Quest.doQuest(0));
         });
         nextButton.setPrefWidth(windowWidth / 5);
         nextButton.setPrefHeight(windowHeight / 8);
@@ -167,6 +167,10 @@ public class Game extends Application {
      * Displays the given event onto the game screen
      */
     public static void displayEvent(Event event) {
+
+        // update event in case it wasn't completely made when initially created
+        event.validate();
+
         if(debug) {
             System.err.println(event.getTitle());
         }

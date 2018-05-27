@@ -1,12 +1,14 @@
 package Quests;
 
+import Deserializers.EventNodeDeserializer;
+import Events.Event;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,28 +20,31 @@ public class Quest {
     private static final String QUEST_FINISH_ERROR =
             "ERROR: Quest: %s is already finished.\n";
 
-    private static Map<String, Quest> questMap;
+    private static Map<Integer, Quest> questMap;
 
     private String name, description;
+    private int ID;
 
-    private List<EventSequence> story;
+    private List<EventRoot> story;
 
     private int progress;
 
-    public static void doQuest(String ID) {
+    public static Event doQuest(int ID) {
         Quest quest = questMap.get(ID);
         if(quest.progress == quest.story.size()) {
-            System.err.printf(QUEST_FINISH_ERROR, ID);
-            return;
+            System.err.printf(QUEST_FINISH_ERROR, quest.name);
+            return null;
         }
 
-        quest.story.get(quest.progress).play();
-        quest.progress++;
+        return quest.story.get(quest.progress++).getEvent();
     }
 
     public static void parseQuest() {
 
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(EventRoot.class, new
+                EventNodeDeserializer());
+        Gson gson = gsonBuilder.create();
         FileReader questGSON;
         try {
             questGSON = new FileReader(QUEST_FILE);
@@ -50,10 +55,9 @@ public class Quest {
         JsonObject questJSON = gson.fromJson(questGSON, JsonObject.class);
 
         questMap = new HashMap<>();
-
         for(Map.Entry<String, JsonElement> element : questJSON.entrySet()) {
-            questMap.put(element.getKey(),
-                    gson.fromJson(element.getValue(), Quest.class) );
+            Quest quest = gson.fromJson(element.getValue(), Quest.class);
+            questMap.put(quest.ID, quest);
         }
     }
 

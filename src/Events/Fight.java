@@ -19,8 +19,8 @@ public class Fight extends Event  {
     private static final double defenseModifier = 0.5;
 
     public Fight(String title, String text, Entity npc, Event
-                 nextEvent) {
-        super(title, text, nextEvent, BUTTON_SET);
+                 parentEvent) {
+        super(title, text, parentEvent, BUTTON_SET);
         other = npc;
     }
 
@@ -142,4 +142,6 @@ public class Fight extends Event  {
 
         return (new Next("battleScene", mainText, this, other));
     }
+
+    public void validate() {}
 }

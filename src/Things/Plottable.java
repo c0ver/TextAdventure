@@ -46,10 +46,7 @@ public abstract class Plottable extends Thing {
 
     public Place getLocation() { return location; }
 
-
     public Event getEvent(Event parentEvent) {
-        return new Interact(getName(), getDescription(), parentEvent);
+        return null;
     }
-
-
 }

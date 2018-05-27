@@ -1,7 +1,7 @@
 package Things.Entities;
 
+import Quests.Quest;
 import Things.Place;
-import Plot.Tile;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -9,15 +9,21 @@ import com.google.gson.JsonObject;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A class for the player and more persistent NPCs that can move
+ */
 public class Mobile extends Entity {
 
     private static final String NPC_LIST_FILE =
             "assets/json/npcList.json";
 
-    private static List<Mobile> npcList;
+    private static Map<Integer, Mobile> npcMap;
+
+    private Map<String, Quest> talkOptions;
 
     public Mobile(String name, Place location) {
         super(name, location);
@@ -73,10 +79,7 @@ public class Mobile extends Entity {
         setLocation(getLocation().getLocation());
     }
 
-    @Override
-    public Tile getCurrentTile() { return getLocation().getTile(getX(), getY()); }
-
-    public static List<Mobile> getNPCList() { return npcList; }
+    public static Mobile getNPC(int index) { return npcMap.get(index); }
 
     public static void createNPCs() {
         Gson gson = new Gson();
@@ -90,11 +93,11 @@ public class Mobile extends Entity {
 
         JsonObject npcObj = gson.fromJson(npcJSON, JsonObject.class);
 
-        npcList = new ArrayList<>();
+        npcMap = new HashMap<>();
         for (Map.Entry<String, JsonElement> element : npcObj.entrySet()) {
             Mobile npc = gson.fromJson(element.getValue(), Mobile.class);
             npc.finishGSON(element);
-            npcList.add(npc);
+            npcMap.put(npc.getID(), npc);
         }
     }
 }

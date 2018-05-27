@@ -12,7 +12,7 @@ public class QuestEvent {
 
     private String type, text;
 
-    /* holds indexes for next events in EventSequence*/
+    /* holds indexes for next events in EventRoot*/
     private List<Integer> next;
 
     public String getType() {

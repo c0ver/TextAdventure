@@ -1,5 +1,8 @@
 package Events;
 
+import Plot.Tile;
+import Things.Plottable;
+
 import static Main.Game.me;
 
 public class Default extends Event  {
@@ -7,8 +10,27 @@ public class Default extends Event  {
 	private static final String[] BUTTON_SET = {"Interact", "North",
 			"Inventory", "West", "South", "East"};
 
-	public Default(String title, String text, Event nextEvent) {
-		super(title, text, nextEvent, BUTTON_SET);
+	private Plottable plottable;
+
+	private boolean playerTrigger;
+
+	public Default(Tile tile) {
+		super(tile.getID(), tile.getDescription(), BUTTON_SET);
+	}
+
+	/**
+	 * To use when the final location to be is not known yet
+	 * @param plottable		Go to this plottable when this event is triggered
+	 */
+	public Default(Plottable plottable) {
+	    super("Placeholder", "Placeholder", BUTTON_SET);
+		this.plottable = plottable;
+
+		// trigger N/A
+		// ex: Opening scenes
+		if(plottable == null) {
+			playerTrigger = true;
+		}
 	}
 
 	@Override
@@ -39,4 +61,14 @@ public class Default extends Event  {
 		return me.getCurrentTile().getEvent();
 	}
 
+	@Override
+	public void validate() {
+		if(plottable == null && !playerTrigger) { return; }
+		if(plottable != null) {
+			me.setLocation(plottable.getLocation());
+			me.setPosition(plottable.getX(), plottable.getY());
+		}
+		resetEvent(me.getCurrentTile().getID(),
+				me.getCurrentTile().getDescription());
+	}
 }

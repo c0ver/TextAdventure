@@ -15,8 +15,8 @@ public class Trade extends Event {
 	
 	private boolean toBuy;
 
-	public Trade(String title, String text, Entity npc, Event nextEvent) {
-		super(title, text, nextEvent, BUTTON_SET);
+	public Trade(String title, String text, Entity npc, Event parentEvent) {
+		super(title, text, parentEvent, BUTTON_SET);
 		other = npc;
 		System.err.println("Inventory size: " + other.getInventory().size());
 	}
@@ -31,7 +31,7 @@ public class Trade extends Event {
 			case "Sell":
 				return (new Inventory(me, this));
 			case "Go Back":
-				return nextEvent;
+				return parentEvent;
 
 			default:
 				if(toBuy) {
@@ -72,4 +72,7 @@ public class Trade extends Event {
 			return (new Next("sellFail", temp, this));
 		}
 	}
+
+	@Override
+	public void validate() {}
 }

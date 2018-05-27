@@ -3,6 +3,7 @@ package Things;
 public class Thing {
 
     private String name, description;
+    private int ID;
 
     protected Thing(String name) {
         this.name = name;
@@ -24,8 +25,10 @@ public class Thing {
 
     public String getDescription() { return description; }
 
+    public int getID() { return ID; }
+
     @Override
-    public String toString() { return getName(); }
+    public String toString() { return name + " " + ID; }
 
     @Override
     public boolean equals(Object o) {
@@ -35,7 +38,7 @@ public class Thing {
             return name.equals(obj);
         } else if(o instanceof Thing) {
             Thing obj = (Thing) o;
-            return name.equals(obj.toString());
+            return name.equals(obj.getName());
         } else {
             return false;
         }
