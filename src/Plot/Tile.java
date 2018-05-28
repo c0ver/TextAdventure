@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 /*
- * Can hold multiple IDs as tiles are stacked on top of each other
+ * Can hold multiple ids as tiles are stacked on top of each other
  */
 public class Tile {
 
@@ -21,8 +21,8 @@ public class Tile {
 
     private static final int[] encounterChance = {0, 20, 50};
 
-    // IDList.indexOf(0) will be primary tile
-    private List<String> IDList;
+    // idList.indexOf(0) will be primary tile
+    private List<String> idList;
 
     private String description;
 
@@ -31,21 +31,21 @@ public class Tile {
     private int dangerLevel;
 
     // to be used in indexOf comparison
-    Tile(String ID) {
-        IDList = new ArrayList<>();
-        IDList.add(ID);
+    Tile(String id) {
+        idList = new ArrayList<>();
+        idList.add(id);
     }
 
 	/* this constructor makes copies of the original tile so other location
 	 depended (things) can be added on later*/
 	Tile(Tile tile) {
 		dangerLevel = tile.dangerLevel;
-		IDList = new ArrayList<>(tile.IDList);
+		idList = new ArrayList<>(tile.idList);
 		description = new String(tile.description);
 	}
 
     void addTile(Tile tile) {
-	    IDList.addAll(tile.IDList);
+	    idList.addAll(tile.idList);
 	    description += "\n\n" + tile.description;
 
 	    if(tile.dangerLevel == 0) {
@@ -63,31 +63,30 @@ public class Tile {
 
 	public Event interact(Event parentEvent) {
 		if(plottable != null) {
-			return null;
-			//return plottable.getEvent(parentEvent);
+			return plottable.interact(parentEvent);
 		} else {
 			System.err.println(INTERACT_ERROR);
 			return null;
 		}
 	}
 
-	public boolean findTile(String ID) {
-	    return IDList.contains(ID);
+	public boolean findTile(String id) {
+	    return idList.contains(id);
     }
 
-	public void setID(String ID){
-	    IDList = new ArrayList<>();
-	    IDList.add(ID);
+	public void setid(String id){
+	    idList = new ArrayList<>();
+	    idList.add(id);
     }
 
-    public String getID(int index) {
-	    return IDList.get(index);
+    public String getid(int index) {
+	    return idList.get(index);
     }
 
-    public String getID() {
+    public String getid() {
 		StringBuilder title = new StringBuilder();
-		for(String ID : IDList) {
-			title.append(ID).append("\\");
+		for(String id : idList) {
+			title.append(id).append("\\");
 		}
 		return title.toString();
 	}
@@ -103,10 +102,10 @@ public class Tile {
 
 	    // increasing levels of dangerLevel increase encounter chance
         // might want to make that increase more dangerous encounters instead
-        if(rand.nextInt(100) + 1 <= encounterChance[dangerLevel]) {
-            int index = rand.nextInt(Entity.getMonsterList().size());
+        /*if(rand.nextInt(100) + 1 <= encounterChance[dangerLevel]) {
+            int index = rand.nextInt(Entity.getMonsterMap().size());
             return Entity.fight(index);
-        }
+        }*/
 
         return new Default(this);
 	}
@@ -121,11 +120,11 @@ public class Tile {
 		
 		Tile obj = (Tile) o;
 
-        return IDList.equals(obj.IDList);
+        return idList.equals(obj.idList);
     }
 	
 	@Override
 	public String toString() {
-		return IDList + " " + dangerLevel;
+		return idList + " " + dangerLevel;
 	}
 }

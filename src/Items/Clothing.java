@@ -6,9 +6,9 @@ public class Clothing extends Item {
 
     private int resistance;
 
-    public Clothing(String name, String description, Rarity rarity, Type
+    public Clothing(String name, int id, String description, Rarity rarity, Type
             type, int value, int resistance) {
-        super(name, description, rarity, type, value);
+        super(name, id, description, rarity, type, value);
         this.resistance = resistance;
     }
 }

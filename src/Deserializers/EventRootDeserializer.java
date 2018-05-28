@@ -5,8 +5,6 @@ import Events.Event;
 import Events.Next;
 import Events.Special;
 import Quests.EventRoot;
-import Things.Entities.Mobile;
-import Things.Plottable;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
@@ -15,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class EventNodeDeserializer implements JsonDeserializer<EventRoot> {
+public class EventRootDeserializer implements JsonDeserializer<EventRoot> {
 
     private static final String TRIGGER_ERROR = "ERROR: |%s| is an unknown " +
             "triggerType in event |%s|.\n";
@@ -24,9 +22,11 @@ public class EventNodeDeserializer implements JsonDeserializer<EventRoot> {
 
     private JsonArray eventSequence;
 
-    private Plottable trigger;
-
     private String name;
+
+    private int triggerID;
+
+    private EventRoot root;
 
     @Override
     public EventRoot deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
@@ -35,17 +35,8 @@ public class EventNodeDeserializer implements JsonDeserializer<EventRoot> {
 
         name = obj.get("name").getAsString();
 
-        int triggerID = obj.get("triggerID").getAsInt();
-        String triggerType = obj.get("triggerType").getAsString();
+        triggerID = obj.get("triggerID").getAsInt();
         String triggerAction = obj.get("triggerAction").getAsString();
-        switch(triggerType) {
-            case "NPC":
-                trigger = Mobile.getNPC(triggerID);
-                break;
-            default:
-                System.err.printf(TRIGGER_ERROR, triggerType, name);
-                break;
-        }
 
         double timeLength = obj.get("timeLength").getAsDouble();
 
@@ -55,11 +46,13 @@ public class EventNodeDeserializer implements JsonDeserializer<EventRoot> {
         Map<String, Integer> rewards = gson.fromJson(rewardList, itemMap);
         Map<String, Integer> expenses = gson.fromJson(expenseList, itemMap);
 
-        eventSequence = obj.get("eventSeries").getAsJsonArray();
-        Event rootEvent = createEvent(0);
+        root = new EventRoot(name, rewards, expenses, timeLength,
+                triggerID, triggerAction);
 
-        return new EventRoot(name, rootEvent, rewards, expenses, timeLength,
-                trigger, triggerAction);
+        eventSequence = obj.get("eventSeries").getAsJsonArray();
+        root.setRootEvent(createEvent(0));
+
+        return root;
     }
 
     /**
@@ -74,12 +67,18 @@ public class EventNodeDeserializer implements JsonDeserializer<EventRoot> {
         String text = node.get("text").getAsString();
         String response = node.get("response").getAsString();
 
+        // to be used when this event is the last one and next Event is not
+        // the next EventRoot in the quest sequence
+        int next = -1;
+
         JsonArray childEvents = node.get("children").getAsJsonArray();
         List<Event> children = new ArrayList<>();
         for(int x = 0; x < childEvents.size(); x++) {
             int childIndex = childEvents.get(x).getAsInt();
             if(childIndex == -1) {
-                children.add(new Default(trigger));
+                children.add(new Default(triggerID));
+                JsonElement element = node.get("next");
+                if(element != null) next = element.getAsInt();
                 continue;
             }
             children.add(createEvent(childIndex));
@@ -87,9 +86,6 @@ public class EventNodeDeserializer implements JsonDeserializer<EventRoot> {
 
         String eventTitle = name + " " + eventIndex;
 
-        if(children.size() == 1) {
-            return new Next(eventTitle, text, children.get(0), response);
-        }
-        return new Special(eventTitle, text, children, response);
+        return new Special(eventTitle, text, root, children, response, next);
     }
 }

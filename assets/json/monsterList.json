@@ -1,5 +1,6 @@
 {
   "bear": {
+    "id": 2001,
     "description": "A huge bear",
     "level": 1,
     "statMultiplier": 0.8,
@@ -9,6 +10,7 @@
     ]
   },
   "wolf": {
+    "id": 2002,
     "description": "A big grey wolf",
     "level": 1,
     "statMultiplier": 0.5,

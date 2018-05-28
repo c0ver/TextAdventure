@@ -146,7 +146,7 @@ public class Plot {
         tileList = new ArrayList<Tile>();
         for (Map.Entry<String, JsonElement> element : tileJSON.entrySet()) {
             Tile tile = gson.fromJson(element.getValue(), Tile.class);
-            tile.setID(element.getKey());
+            tile.setid(element.getKey());
             tileList.add(tile);
         }
     }

@@ -1,8 +1,10 @@
 package Events;
 
 import Quests.Quest;
+import Things.Plottable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,14 +14,18 @@ public class Interact extends Event {
 
     private static final String BUTTON = "Go Back";
 
-    public Interact(String title, String text,
-                    Map<String, Quest> talkOptions, Event parentEvent) {
-        super(title, text, parentEvent);
-        this.talkOptions = talkOptions;
+    public Interact(Plottable plottable, Event parentEvent) {
+        super(plottable.getName(), plottable.getDescription(), parentEvent);
 
-        List<String> buttonSet = new ArrayList<>(talkOptions.keySet());
-        buttonSet.add(BUTTON);
-        createButtons(buttonSet);
+        talkOptions = new HashMap<>();
+        List<String> buttons = new ArrayList<>();
+        for(Quest quest : plottable.getQuests()) {
+            talkOptions.put(quest.nextStep(), quest);
+            buttons.add(quest.nextStep());
+        }
+
+        buttons.add(BUTTON);
+        createButtons(buttons);
     }
 
     @Override
@@ -27,8 +33,7 @@ public class Interact extends Event {
         if(command.equals(BUTTON)) {
             return parentEvent;
         }
-
-        return null;
+        return talkOptions.get(command).doQuest();
     }
 
     @Override

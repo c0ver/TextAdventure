@@ -10,27 +10,22 @@ public class Default extends Event  {
 	private static final String[] BUTTON_SET = {"Interact", "North",
 			"Inventory", "West", "South", "East"};
 
-	private Plottable plottable;
-
-	private boolean playerTrigger;
+	private int triggerID;
 
 	public Default(Tile tile) {
-		super(tile.getID(), tile.getDescription(), BUTTON_SET);
+		super(tile.getid(), tile.getDescription(), BUTTON_SET);
 	}
 
 	/**
 	 * To use when the final location to be is not known yet
-	 * @param plottable		Go to this plottable when this event is triggered
+	 * @param triggerID		Go to this plottable when this event is triggered
 	 */
-	public Default(Plottable plottable) {
+	public Default(int triggerID) {
 	    super("Placeholder", "Placeholder", BUTTON_SET);
-		this.plottable = plottable;
+	    this.triggerID = triggerID;
 
-		// trigger N/A
-		// ex: Opening scenes
-		if(plottable == null) {
-			playerTrigger = true;
-		}
+	    // Special events that lead here need a button to come here
+	    this.response = "Next";
 	}
 
 	@Override
@@ -63,12 +58,15 @@ public class Default extends Event  {
 
 	@Override
 	public void validate() {
-		if(plottable == null && !playerTrigger) { return; }
-		if(plottable != null) {
+		if(triggerID == 0) return;
+
+		// player's id will be -1
+		if(triggerID != -1) {
+			Plottable plottable = Plottable.getPlottable(triggerID);
 			me.setLocation(plottable.getLocation());
 			me.setPosition(plottable.getX(), plottable.getY());
 		}
-		resetEvent(me.getCurrentTile().getID(),
+		resetEvent(me.getCurrentTile().getid(),
 				me.getCurrentTile().getDescription());
 	}
 }

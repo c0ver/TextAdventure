@@ -1,6 +1,6 @@
 {
   "Soldier Caravan": {
-    "ID": 1,
+    "id": 1,
     "description": "A caravan of soldiers preparing for a journey.",
     "locationName": "mainMap",
     "near": "Westwend",

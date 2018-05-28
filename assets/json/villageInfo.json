@@ -1,5 +1,6 @@
 {
   "Westwend": {
+    "id": 1001,
     "size": 3,
     "xPosition": 2,
     "yPosition": 2,
@@ -11,6 +12,7 @@
     ]
   },
   "Pirn": {
+        "id": 1002,
     "size": 3,
     "xPosition": 29,
     "yPosition": 2,
@@ -21,6 +23,7 @@
     ]
   },
   "Taedmorden": {
+        "id": 1003,
     "size": 6,
     "xPosition": 30,
     "yPosition": 30,

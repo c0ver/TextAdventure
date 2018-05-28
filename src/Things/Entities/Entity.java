@@ -3,6 +3,7 @@ package Things.Entities;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,9 +41,8 @@ public class Entity extends Plottable {
 
     private static final int BASE_MULTIPLIER = 10;
 
-    private static final int startPosition = 28;
 
-    private static List<Entity> monsterList;
+    private static Map<Integer, Entity> monsterMap;
 
 	/* HP, Energy */
 	private int[] stats;
@@ -53,8 +53,8 @@ public class Entity extends Plottable {
 	private List<String> inventory;
 
 	/* creates the player */
-	public Entity(String name, Place location) {
-        super(name, null, location, startPosition, startPosition);
+	public Entity(String name, int id, Place location) {
+        super(name, id, null, location);
         level = 1;
         money = START_MONEY;
         statMultiplier = 1;
@@ -80,6 +80,8 @@ public class Entity extends Plottable {
 
         System.arraycopy(toCopy.stats, 0, stats, 0, TOTAL_STAT_COUNT);
     }
+
+    public Event interact(Event parentEvent) { return null; }
 
 	public void gainMoney(int amount) {
 		money += amount;
@@ -134,9 +136,11 @@ public class Entity extends Plottable {
 		inventory.remove(itemName);
 	}
 
-    public void removeItem(String itemName, int count) {
-        for(int x = 0; x < count; x++) {
-            inventory.remove(itemName);
+    public void removeItems(Map<String, Integer> items) {
+        for(String item : items.keySet()) {
+            for(int x = 0; x < items.get(item); x++) {
+                inventory.remove(item);
+            }
         }
     }
 
@@ -144,9 +148,11 @@ public class Entity extends Plottable {
 		inventory.add(itemName);
 	}
 
-	public void addItem(String itemName, int count) {
-	    for(int x = 0; x < count; x++) {
-	        inventory.add(itemName);
+    public void addItems(Map<String, Integer> items) {
+        for(String item : items.keySet()) {
+            for(int x = 0; x < items.get(item); x++) {
+                inventory.add(item);
+            }
         }
     }
 
@@ -171,7 +177,7 @@ public class Entity extends Plottable {
     }
 
     public static Event fight(int index) {
-	    return monsterList.get(index).fight();
+	    return monsterMap.get(index).fight();
     }
 
     private Event fight() {
@@ -210,29 +216,29 @@ public class Entity extends Plottable {
 
 	public double getTempModifier() { return tempModifier; }
 
-    public static List<Entity> getMonsterList() { return monsterList; }
+	public static Map<Integer, Entity> getMonsterMap() { return monsterMap; }
 
-	public static void createMonsters() {
+	public static Map<Integer, Entity> createMonsters() {
         Gson gson = new Gson();
-	    FileReader monsterJSON;
+	    FileReader monsterJSON = null;
         try {
             monsterJSON = new FileReader(MONSTER_LIST_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return;
+            System.exit(-1);
         }
 
         JsonObject monsterObj = gson.fromJson(monsterJSON, JsonObject.class);
 
-        monsterList = new ArrayList<>();
+        monsterMap = new HashMap<>();
         for(Map.Entry<String, JsonElement> element : monsterObj.entrySet()) {
             Entity monster = gson.fromJson(element.getValue(), Entity.class);
             monster.finishGSON(element);
-            monsterList.add(monster);
+            monsterMap.put(monster.getid(), monster);
         }
+        System.err.println("MONSTER " + monsterMap);
+        return monsterMap;
     }
-
-
 
     /* acts like a constructor that finishes Entities read from json files.
      * Could be replaced by custom deserializer

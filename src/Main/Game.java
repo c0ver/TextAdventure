@@ -8,12 +8,14 @@ import Things.Entities.Mobile;
 import Things.Item;
 
 import Things.Place;
+import Things.Plottable;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -55,11 +57,13 @@ public class Game extends Application {
 
     /* map stuff */
     private static final String MAIN_MAP_NAME = "mainMap";
-    private static final String PLAYER_ICON_FILE = "assets/playerIcon.jpeg";
+    private static final int MAP_ID = 1000;
     private static final int MAIN_MAP_SIZE = 32;
     private static final int SQUARE_SIZE = 64;
     public static final int SQUARES_SHOWN = 5; // needs to be odd
     public static Place mainMap;
+
+    private static final String PLAYER_ICON_FILE = "assets/playerIcon.jpeg";
     public static Image playerIcon;
 
     public static void main(String[] args) {
@@ -90,10 +94,10 @@ public class Game extends Application {
 
         Button nextButton = new Button("Next");
         nextButton.setOnAction(e -> {
-            me = new Mobile(enterName.getText(), mainMap);
+            me = new Mobile(enterName.getText(), 0, mainMap);
 
             // intro scene
-            displayEvent(Quest.doQuest(0));
+            displayEvent(Quest.getQuest(0).doQuest());
         });
         nextButton.setPrefWidth(windowWidth / 5);
         nextButton.setPrefHeight(windowHeight / 8);
@@ -144,21 +148,18 @@ public class Game extends Application {
     private static void initializeGame() {
         Plot.parseTileText();
 
-        // mainMap must be created first before villages can be added to it
-        mainMap = new Place(MAIN_MAP_NAME, MAIN_MAP_SIZE);
-        Place.createVillages();
-        Plot.inputImages();
 
+        // mainMap must be created first before villages can be added to it
+        mainMap = new Place(MAIN_MAP_NAME, MAIN_MAP_SIZE, MAP_ID);
+        Plottable.createPlottables();
+        Item.createItems();
+
+        Plot.inputImages();
         try {
             playerIcon = new Image(new FileInputStream(PLAYER_ICON_FILE));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        Mobile.createNPCs();
-        Entity.createMonsters();
-
-        Item.createItems();
 
         Quest.parseQuest();
     }
@@ -176,11 +177,17 @@ public class Game extends Application {
         }
 
         /* The story (center) */
-        Text textWindow = new Text(event.getText());
-        textWindow.setFont(storyFont);
-        textWindow.setWrappingWidth(windowWidth -
-                (SQUARES_SHOWN * SQUARE_SIZE * 2) - MAIN_TEXT_PADDING);
-        textWindow.setTextAlignment(TextAlignment.JUSTIFY);
+        Text mainText = new Text(event.getText());
+        mainText.setFont(storyFont);
+        mainText.setWrappingWidth(windowWidth -
+               (SQUARES_SHOWN * SQUARE_SIZE * 2) - MAIN_TEXT_PADDING);
+        mainText.setTextAlignment(TextAlignment.JUSTIFY);
+        StackPane centerText = new StackPane(mainText);
+        centerText.setMinWidth(windowWidth - SQUARES_SHOWN * SQUARE_SIZE * 2);
+        StackPane.setMargin(mainText, new Insets(20));
+
+        ScrollPane textWindow = new ScrollPane(centerText);
+        textWindow.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
 
         /* Player information/stats (left) */

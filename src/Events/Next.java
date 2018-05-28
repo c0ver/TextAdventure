@@ -15,11 +15,6 @@ public class Next extends Event {
 		this.nextEvent = nextEvent;
 	}
 
-	public Next(String title, String text, Event nextEvent, String response) {
-    	this(title, text, nextEvent);
-    	this.response = response;
-	}
-
 	public Next(String title, String text, Event nextEvent, Entity other) {
 		this(title, text, nextEvent);
 		this.other = other;

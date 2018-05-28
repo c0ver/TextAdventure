@@ -31,9 +31,9 @@ public class Item extends Thing {
 		super(name);
 	}
 	
-	protected Item(String name, String description, Rarity rarity, Type type,
-                int value) {
-	    super(name, description);
+	protected Item(String name, int id, String description, Rarity rarity,
+                   Type type, int value) {
+	    super(name, id, description);
 	    this.rarity = rarity;
 	    this.type = type;
 	    this.value = value;

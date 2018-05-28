@@ -36,7 +36,6 @@ public abstract class Event {
 
 	protected Event parentEvent;
 
-	// placeholder
 	public Event(String title, String text) {
 		this.title = title;
 		this.text = text;

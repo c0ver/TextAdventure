@@ -1,6 +1,7 @@
 package Things.Entities;
 
-import Quests.Quest;
+import Events.Event;
+import Events.Interact;
 import Things.Place;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -8,9 +9,7 @@ import com.google.gson.JsonObject;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,12 +20,15 @@ public class Mobile extends Entity {
     private static final String NPC_LIST_FILE =
             "assets/json/npcList.json";
 
+
     private static Map<Integer, Mobile> npcMap;
 
-    private Map<String, Quest> talkOptions;
+    public Mobile(String name, int id, Place location) {
+        super(name, id, location);
+    }
 
-    public Mobile(String name, Place location) {
-        super(name, location);
+    public Event interact(Event parentEvent) {
+        return new Interact(this, parentEvent);
     }
 
     public void move(int xDelta, int yDelta) {
@@ -81,14 +83,14 @@ public class Mobile extends Entity {
 
     public static Mobile getNPC(int index) { return npcMap.get(index); }
 
-    public static void createNPCs() {
+    public static Map<Integer, Mobile> createNPCs() {
         Gson gson = new Gson();
-        FileReader npcJSON;
+        FileReader npcJSON = null;
         try {
             npcJSON = new FileReader(NPC_LIST_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return;
+            System.exit(-1);
         }
 
         JsonObject npcObj = gson.fromJson(npcJSON, JsonObject.class);
@@ -97,7 +99,9 @@ public class Mobile extends Entity {
         for (Map.Entry<String, JsonElement> element : npcObj.entrySet()) {
             Mobile npc = gson.fromJson(element.getValue(), Mobile.class);
             npc.finishGSON(element);
-            npcMap.put(npc.getID(), npc);
+            npcMap.put(npc.getid(), npc);
         }
+        System.err.println("NPC " + npcMap);
+        return npcMap;
     }
 }
