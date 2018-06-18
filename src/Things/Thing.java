@@ -1,6 +1,13 @@
 package Things;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Thing {
+
+    private static int nextID = 1;
+
+    private static Map<Integer, Thing> thingMap;
 
     private String name, description;
     private int id;
@@ -45,5 +52,24 @@ public class Thing {
             return false;
         }
 
+    }
+
+    public static void createThings() {
+        thingMap = new HashMap<>();
+        thingMap.putAll(Plottable.createPlottables());
+        thingMap.putAll(Item.createItems());
+
+        System.err.println(thingMap);
+    }
+
+    public static String getName(int thingID) {
+        return thingMap.get(thingID).name;
+    }
+
+    /**
+     * Creates a unique id for every thing created
+     */
+    public static int getNextID() {
+        return nextID++;
     }
 }

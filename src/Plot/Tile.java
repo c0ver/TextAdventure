@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 /*
- * Can hold multiple ids as tiles are stacked on top of each other
+ * Can hold multiple names as tiles are stacked on top of each other
  */
 public class Tile {
 
@@ -21,8 +21,8 @@ public class Tile {
 
     private static final int[] encounterChance = {0, 20, 50};
 
-    // idList.indexOf(0) will be primary tile
-    private List<String> idList;
+    // nameList.indexOf(0) will be primary tile
+    private List<String> nameList;
 
     private String description;
 
@@ -31,21 +31,21 @@ public class Tile {
     private int dangerLevel;
 
     // to be used in indexOf comparison
-    Tile(String id) {
-        idList = new ArrayList<>();
-        idList.add(id);
+    Tile(String name) {
+        nameList = new ArrayList<>();
+        nameList.add(name);
     }
 
 	/* this constructor makes copies of the original tile so other location
 	 depended (things) can be added on later*/
 	Tile(Tile tile) {
 		dangerLevel = tile.dangerLevel;
-		idList = new ArrayList<>(tile.idList);
+		nameList = new ArrayList<>(tile.nameList);
 		description = new String(tile.description);
 	}
 
     void addTile(Tile tile) {
-	    idList.addAll(tile.idList);
+	    nameList.addAll(tile.nameList);
 	    description += "\n\n" + tile.description;
 
 	    if(tile.dangerLevel == 0) {
@@ -70,23 +70,24 @@ public class Tile {
 		}
 	}
 
-	public boolean findTile(String id) {
-	    return idList.contains(id);
+	public boolean findTile(String name) {
+	    return nameList.contains(name);
     }
 
-	public void setid(String id){
-	    idList = new ArrayList<>();
-	    idList.add(id);
+	public void setName(String name){
+	    nameList = new ArrayList<>();
+	    nameList.add(name);
     }
 
-    public String getid(int index) {
-	    return idList.get(index);
+    public String getName(int index) {
+	    if(index >= nameList.size()) return null;
+	    return nameList.get(index);
     }
 
-    public String getid() {
+    public String getName() {
 		StringBuilder title = new StringBuilder();
-		for(String id : idList) {
-			title.append(id).append("\\");
+		for(String name : nameList) {
+			title.append(name).append("\\");
 		}
 		return title.toString();
 	}
@@ -120,11 +121,11 @@ public class Tile {
 		
 		Tile obj = (Tile) o;
 
-        return idList.equals(obj.idList);
+        return nameList.equals(obj.nameList);
     }
 	
 	@Override
 	public String toString() {
-		return idList + " " + dangerLevel;
+		return nameList + " " + dangerLevel;
 	}
 }

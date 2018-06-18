@@ -2,6 +2,7 @@ package Events;
 
 import Plot.Tile;
 import Things.Plottable;
+import javafx.scene.control.Button;
 
 import static Main.Game.me;
 
@@ -13,7 +14,7 @@ public class Default extends Event  {
 	private int triggerID;
 
 	public Default(Tile tile) {
-		super(tile.getid(), tile.getDescription(), BUTTON_SET);
+		super(tile.getName(), tile.getDescription(), BUTTON_SET);
 	}
 
 	/**
@@ -29,9 +30,9 @@ public class Default extends Event  {
 	}
 
 	@Override
-	public Event chooseNewEvent(String command) {
+	public Event chooseNewEvent(Button button) {
 
-		switch (command) {
+		switch (button.getText()) {
 			case "Interact":
 				return me.getCurrentTile().interact(this);
 			case "Inventory":
@@ -66,7 +67,7 @@ public class Default extends Event  {
 			me.setLocation(plottable.getLocation());
 			me.setPosition(plottable.getX(), plottable.getY());
 		}
-		resetEvent(me.getCurrentTile().getid(),
+		resetEvent(me.getCurrentTile().getName(),
 				me.getCurrentTile().getDescription());
 	}
 }

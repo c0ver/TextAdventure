@@ -1,19 +1,17 @@
 package Things;
 
 import Events.Event;
+import Events.Trade;
 import Plot.Tile;
 import Quests.Quest;
 import Things.Entities.Entity;
 import Things.Entities.Mobile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Plottable extends Thing {
 
-    private static final int START_POSITION = 28;
+    private static final int START_POSITION = 3;
 
     private static Map<Integer, Plottable> plottableMap;
 
@@ -66,14 +64,40 @@ public abstract class Plottable extends Thing {
 
     public Place getLocation() { return location; }
 
+    public String[] getInteractions() {
+
+        List<String> buttons = new ArrayList<>();
+
+        if(quests != null) {
+            for (Quest quest : quests) {
+                buttons.add(quest.nextStep());
+            }
+        }
+
+        if(this instanceof Entity) {
+            buttons.add("Trade");
+        }
+
+        buttons.add(Event.RETURN);
+
+        return buttons.toArray(new String[0]);
+    }
+
+    public String getInfo() {
+        if(this instanceof Entity) {
+            return this.getInfo();
+        }
+        return "HI";
+    }
+
     public static Plottable getPlottable(int index) { return plottableMap.get(index); }
 
-    public static void createPlottables() {
+    public static Map<Integer, Plottable> createPlottables() {
         plottableMap = new HashMap<>();
         plottableMap.putAll(Place.createVillages());
         plottableMap.putAll(Entity.createMonsters());
         plottableMap.putAll(Mobile.createNPCs());
 
-        System.err.println(plottableMap);
+        return plottableMap;
     }
 }

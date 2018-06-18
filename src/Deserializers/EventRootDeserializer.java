@@ -40,13 +40,13 @@ public class EventRootDeserializer implements JsonDeserializer<EventRoot> {
 
         double timeLength = obj.get("timeLength").getAsDouble();
 
-        JsonElement rewardList = obj.get("rewards");
-        JsonElement expenseList = obj.get("expenses");
-        Type itemMap = new TypeToken<Map<String, Integer>>() { }.getType();
-        Map<String, Integer> rewards = gson.fromJson(rewardList, itemMap);
-        Map<String, Integer> expenses = gson.fromJson(expenseList, itemMap);
+        JsonElement gainList = obj.get("gain");
+        JsonElement loseList = obj.get("lose");
+        Type itemMap = new TypeToken<Map<Integer, Integer>>() { }.getType();
+        Map<Integer, Integer> gain = gson.fromJson(gainList, itemMap);
+        Map<Integer, Integer> expenses = gson.fromJson(loseList, itemMap);
 
-        root = new EventRoot(name, rewards, expenses, timeLength,
+        root = new EventRoot(name, gain, expenses, timeLength,
                 triggerID, triggerAction);
 
         eventSequence = obj.get("eventSeries").getAsJsonArray();

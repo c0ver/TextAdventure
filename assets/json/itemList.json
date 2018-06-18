@@ -1,44 +1,51 @@
 {
-  "Gold": {
-    "id": 1,
-    "description": "The highest form of coined currency.",
-    "rarity": "RARE",
-    "type": "MISC"
-  },
-  "Silver": {
-        "id": 2,
-    "description": "A decent amount of money.",
-    "rarity": "UNCOMMON",
-    "type": "MISC"
-  },
   "Copper": {
-        "id": 3,
+    "id": 10000,
     "description": "The lowest form of coined currency",
     "rarity": "COMMON",
-    "type": "MISC"
+    "type": "MISC",
+    "value": [1, 0, 0]
+  },
+  "Silver": {
+    "id": 10001,
+    "description": "A decent amount of money.",
+    "rarity": "UNCOMMON",
+    "type": "MISC",
+    "value": [0, 1, 0]
+  },
+  "Gold": {
+    "id": 10002,
+    "description": "The highest form of coined currency.",
+    "rarity": "RARE",
+    "type": "MISC",
+    "value": [0, 0, 1]
   },
   "Animal Fur": {
-        "id": 4,
+    "id": 4001,
     "description": "A fur pelt harvested from a killed animal",
     "rarity": "COMMON",
-    "type": "MISC"
+    "type": "MISC",
+    "value": [2, 0, 0]
   },
   "Gambeson": {
-        "id": 5,
+    "id": 4101,
     "description": "A padded defensive jacket constructed out of linen or wool. Can protect the wearer more than one might think.",
     "rarity": "COMMON",
-    "type": "CLOTHING"
+    "type": "CLOTHING",
+    "value": [5, 0, 0]
   },
   "Spear": {
-        "id": 6,
+    "id": 4201,
     "description": "A weapon with a long shaft and a pointed tip. A common and useful weapon due to its long reach.",
     "rarity": "COMMON",
-    "type": "TOOL"
+    "type": "TOOL",
+    "value": [3, 0, 0]
   },
   "Dagger": {
-        "id": 7,
+    "id": 4202,
     "description": "An tool that can be also used as an easily concealed weapon. Can be very dangerous in the right hands.",
     "rarity": "COMMON",
-    "type": "TOOL"
+    "type": "TOOL",
+    "value": [3, 0, 0]
   }
 }

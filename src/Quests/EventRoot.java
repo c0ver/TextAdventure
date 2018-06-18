@@ -17,8 +17,9 @@ public class EventRoot {
     // holds the children
     private Event rootEvent;
 
-    private Map<String, Integer> rewards;
-    private Map<String, Integer> expenses;
+    // identifier, amount
+    private Map<Integer, Integer> gain;
+    private Map<Integer, Integer> lose;
 
     private double timeLength;
 
@@ -27,12 +28,12 @@ public class EventRoot {
     private int triggerID;
     private String triggerAction;
 
-    public EventRoot(String name, Map<String, Integer> rewards,
-                     Map<String, Integer> expenses, double timeLength, int
+    public EventRoot(String name, Map<Integer, Integer> gain,
+                     Map<Integer, Integer> lose, double timeLength, int
                      triggerID, String triggerAction) {
         this.name = name;
-        this.rewards = rewards;
-        this.expenses = expenses;
+        this.gain = gain;
+        this.lose = lose;
         this.timeLength = timeLength;
         this.triggerID = triggerID;
         this.triggerAction = triggerAction;
@@ -46,8 +47,8 @@ public class EventRoot {
             if( name.equals(myQuest.nextStep()) ) return;
         }
 
-        me.addItems(rewards);
-        me.removeItems(expenses);
+        me.addItems(gain);
+        me.removeItems(lose);
     }
 
     public void addToTrigger(Quest quest) {

@@ -31,9 +31,13 @@ public class Entity extends Plottable {
             "ERROR: Energy is negative";
 
 	private static final String ENTITY_INFO =
-            "%s\nHP: %d\nEnergy: %d\nLevel: %d\nMoney: %d\n";
+            "%s\nHP: %d\nEnergy: %d\nLevel: %d\nMoney:";
 
-	private static final int START_MONEY = 10;
+    public static final int MONEY_TYPES = 3;
+    public static final int COPPER_INDEX = 0;
+    public static final int SILVER_INDEX = 1;
+    public static final int GOLD_INDEX = 2;
+    private static final int[] CONVERSION_RATE = {1, 16, 128};
 
 	private static final int TOTAL_STAT_COUNT = 2;
 	private static final int HP_INDEX = 0;
@@ -44,21 +48,20 @@ public class Entity extends Plottable {
 
     private static Map<Integer, Entity> monsterMap;
 
-	/* HP, Energy */
-	private int[] stats;
+	private int[] stats, money;
 
-	private int level, money;
+	private int level;
 	private double statMultiplier, tempModifier;
 	private double baseAttack;
-	private List<String> inventory;
+	private List<Integer> inventory;
 
 	/* creates the player */
 	public Entity(String name, int id, Place location) {
         super(name, id, null, location);
         level = 1;
-        money = START_MONEY;
         statMultiplier = 1;
         tempModifier = 1;
+        money = new int[MONEY_TYPES];
 
         stats = new int[TOTAL_STAT_COUNT];
         for(int i = 0; i < TOTAL_STAT_COUNT; i++) {
@@ -82,18 +85,6 @@ public class Entity extends Plottable {
     }
 
     public Event interact(Event parentEvent) { return null; }
-
-	public void gainMoney(int amount) {
-		money += amount;
-	}
-
-	public boolean loseMoney(int amount) {
-		if(money - amount < 0) {
-			return false;
-		}
-		money -= amount;
-		return true;
-	}
 
 	public boolean loseHP(int amount) {
         stats[HP_INDEX] -= amount;
@@ -132,33 +123,75 @@ public class Entity extends Plottable {
         }
     }
 
-	public void removeItem(String itemName) {
-		inventory.remove(itemName);
+    public void gainMoney(int[] amount) {
+	    for(int x = 0; x < MONEY_TYPES; x++) {
+	        money[x] += amount[x];
+        }
 	}
 
-    public void removeItems(Map<String, Integer> items) {
-        for(String item : items.keySet()) {
-            for(int x = 0; x < items.get(item); x++) {
-                inventory.remove(item);
+	public void loseMoney(int[] amount) {
+        int remainder = getTotalMoney(money) - getTotalMoney(amount);
+
+        for(int x = MONEY_TYPES - 1; x >= 0; x--) {
+            money[x] = remainder / CONVERSION_RATE[x];
+            remainder -= money[x] * CONVERSION_RATE[x];
+        }
+	}
+
+	public boolean enoughMoney(int[] amount) {
+        return getTotalMoney(money) > getTotalMoney(amount);
+    }
+
+	public void removeItem(int itemID) { inventory.remove((Integer) itemID); }
+
+    public void removeItems(Map<Integer, Integer> items) {
+        for(int itemID : items.keySet()) {
+            for(int x = 0; x < items.get(itemID); x++) {
+                inventory.remove((Integer) itemID);
             }
         }
     }
 
-	public void addItem(String itemName) {
-		inventory.add(itemName);
+	public void addItem(int itemID) {
+
+	    // special case if the item is money
+	    if(itemID >= Item.MONEY_ID) {
+	        money[itemID - Item.MONEY_ID]++;
+	        return;
+        }
+
+	    inventory.add(itemID);
 	}
 
-    public void addItems(Map<String, Integer> items) {
-        for(String item : items.keySet()) {
-            for(int x = 0; x < items.get(item); x++) {
-                inventory.add(item);
+    public void addItems(Map<Integer, Integer> items) {
+        for(int itemID : items.keySet()) {
+            for(int x = 0; x < items.get(itemID); x++) {
+                addItem(itemID);
             }
         }
     }
 
 	public void loot(Entity toLoot) {
-	    inventory.addAll(toLoot.inventory);
+	    for(int itemID : toLoot.inventory) addItem(itemID);
+	    for(int x = 0; x < MONEY_TYPES; x++) {
+	        money[x] += toLoot.money[x];
+	        toLoot.money[x] = 0;
+        }
         toLoot.inventory.clear();
+    }
+
+    public boolean trade(Entity other, int itemID) {
+        int[] itemValue = other.getItemValue(itemID);
+
+	    if(!enoughMoney(itemValue)) return false;
+
+	    loseMoney(itemValue);
+        other.gainMoney(itemValue);
+
+        other.removeItem(itemID);
+        addItem(itemID);
+
+        return true;
     }
 
     /**
@@ -185,26 +218,28 @@ public class Entity extends Plottable {
                 new Entity(this), me.getCurrentTile().getEvent());
     }
 
-	public int getItemValue(String itemName) {
-		int index = Item.itemList.indexOf(new Item(itemName));
-		
-		if(index == -1) {
-			System.err.printf(ITEM_MISSING_ERROR, itemName);
-		}
-		
-		return Item.itemList.get(index).getValue();
+	public int[] getItemValue(int itemID) {
+		return Item.getItemMap().get(itemID).getValue();
 	}
 
 	public String getInfo() {
 	    return String.format(ENTITY_INFO, getName(), getHP(), getEnergy(),
-				level, money);
+				level);
     }
 
-	public List<String> getInventory() { return inventory; }
-	
-	public int getMoney() {
-		return money;
-	}
+	public List<Integer> getInventory() { return inventory; }
+
+	// adds an extra name "Go Back"; only to be used for Inventory Event
+	public String[] getInventoryItemNames() {
+	    String[] itemNames = new String[inventory.size() + 1];
+	    for(int x = 0; x < inventory.size(); x++) {
+	        itemNames[x] = Item.getName(inventory.get(x));
+        }
+
+        itemNames[itemNames.length - 1] = Event.RETURN;
+
+        return itemNames;
+    }
 
 	public int getLevel() { return level; }
 
@@ -215,6 +250,22 @@ public class Entity extends Plottable {
 	public int getEnergy() { return stats[ENERGY_INDEX]; }
 
 	public double getTempModifier() { return tempModifier; }
+
+	public int[] getMoney() { return money; }
+
+	public int getCopper() { return money[COPPER_INDEX]; }
+
+    public int getSilver() { return money[SILVER_INDEX]; }
+
+    public int getGold() { return money[GOLD_INDEX]; }
+
+	public static int getTotalMoney(int[] amount) {
+		int totalMoney = 0;
+		for(int x = 0; x < MONEY_TYPES; x++) {
+		    totalMoney += amount[x] * CONVERSION_RATE[x];
+        }
+        return totalMoney;
+	}
 
 	public static Map<Integer, Entity> getMonsterMap() { return monsterMap; }
 
@@ -249,19 +300,24 @@ public class Entity extends Plottable {
         if (this instanceof Mobile) {
 
             JsonObject obj = element.getValue().getAsJsonObject();
+            JsonElement near = obj.get("near");
             for(Place place : Place.getPlaceList()) {
                 if( place.getName().equals(obj.get("locationName").getAsString()) ) {
                     setLocation(place);
                 }
 
-                if( place.getName().equals(obj.get("near").getAsString()) ) {
+                if(near != null && place.getName().equals(near.getAsString())) {
                     int x = place.getX() + obj.get("xDelta").getAsInt();
                     int y = place.getY() + obj.get("yDelta").getAsInt();
                     setPosition(x, y);
+                    getLocation().getPlot().addPlottable(this);
                 }
             }
 
-            getLocation().getPlot().addPlottable(this);
+            if(obj.get("on") != null) {
+                String tile = obj.get("on").getAsString();
+                getLocation().getPlot().addPlottable(this, tile);
+            }
         } else {
             setPosition(-1, -1);
         }
@@ -271,8 +327,7 @@ public class Entity extends Plottable {
         for (int i = 0; i < TOTAL_STAT_COUNT; i++) {
             stats[i] = (int) (level * statMultiplier * BASE_MULTIPLIER);
         }
+
+        if(inventory == null) inventory = new ArrayList<>();
     }
-
-
-
 }

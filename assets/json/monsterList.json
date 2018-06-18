@@ -6,7 +6,7 @@
     "statMultiplier": 0.8,
     "baseAttack": 2,
     "inventory": [
-      "Animal Fur"  
+      4001 
     ]
   },
   "wolf": {
@@ -16,7 +16,7 @@
     "statMultiplier": 0.5,
     "baseAttack": 1.5,
     "inventory": [
-      "Animal Fur"  
+      4001  
     ]
   }
 }

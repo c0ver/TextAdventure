@@ -2,27 +2,31 @@ package Events;
 
 import static Main.Game.me;
 import Things.Entities.Entity;
+import Things.Item;
+import Things.Thing;
+import javafx.scene.control.Button;
 
 public class Trade extends Event {
 	
-	private static final String[] BUTTON_SET = {"Go Back", "Buy", "Sell"};
-	private static final String BUY_SUCCESS_TEXT = "%s successfully bought. You now have %d money.\n";
-	private static final String SELL_SUCCESS_TEXT = "%s successfully sold. You now have %d money.\n";
-	private static final String BUY_FAIL_TEXT =
-			"You could not buy %s. You have %d money and %s requires %d.\n";
-	private static final String SELL_FAIL_TEXT =
-			"You could not sell %s. Buyer has %d money and %s requires %d.\n";
-	
+	public static final String[] BUTTON_SET = {"Go Back", "Buy", "Sell"};
+	private static final String TRADE_SUCCESS_TEXT = "%s successfully %s." +
+			" You now have %d copper, %d silver, and %d gold.\n";
+	private static final String TRADE_FAIL_TEXT =
+			"You could not %s %s because the buyer does not have enough money.";
+
 	private boolean toBuy;
 
+	private Entity other;
+
 	public Trade(String title, String text, Entity npc, Event parentEvent) {
-		super(title, text, parentEvent, BUTTON_SET);
+		super(title, text, parentEvent, npc, BUTTON_SET);
 		other = npc;
-		System.err.println("Inventory size: " + other.getInventory().size());
 	}
 
 	@Override
-	public Event chooseNewEvent(String command) {
+	public Event chooseNewEvent(Button button) {
+	    String command = button.getText();
+
 		System.err.println("Trade command: " + command);
 		switch(command) {
 			case "Buy":
@@ -34,42 +38,35 @@ public class Trade extends Event {
 				return parentEvent;
 
 			default:
+				int id = (int) button.getUserData();
 				if(toBuy) {
 					toBuy = false;
-					return buy(command);
+					return buy(id, command);
 				} else {
-					return sell(command);
+					return sell(id, command);
 				}
 		}
 	}
 	
-	private Event buy(String itemName) {
-		int itemValue = other.getItemValue(itemName);
-		if(me.loseMoney(itemValue)) {
-			other.gainMoney(itemValue);
-			other.removeItem(itemName);
-			me.addItem(itemName);
-			String temp = String.format(BUY_SUCCESS_TEXT, itemName, me.getMoney());
-			return (new Next("buySuccess", temp, this));
+	private Event buy(int itemID, String itemName) {
+		if(me.trade(other, itemID)) {
+			String temp = String.format(TRADE_SUCCESS_TEXT, itemName,
+					"bought", me.getCopper(), me.getSilver(), me.getGold());
+			return new Next("buySuccess", temp, this);
 		} else {
-			String temp = String.format(BUY_FAIL_TEXT, itemName,
-										me.getMoney(), itemName, itemValue);
-			return (new Next("buyFail", temp, this));
+			String temp = String.format(TRADE_FAIL_TEXT, "buy", itemName);
+			return new Next("buyFail", temp, this);
 		}
 	}
 	
-	private Event sell(String itemName) {
-		int itemValue = me.getItemValue(itemName);
-		if(other.loseMoney(itemValue)) {
-			me.gainMoney(itemValue);
-			me.removeItem(itemName);
-			other.addItem(itemName);
-			String temp = String.format(SELL_SUCCESS_TEXT, itemName, me.getMoney());
-			return (new Next("sellSuccess", temp, this));
+	private Event sell(int itemID, String itemName) {
+		if(other.trade(me, itemID)) {
+            String temp = String.format(TRADE_SUCCESS_TEXT, itemName,
+                "sold", me.getCopper(), me.getSilver(), me.getGold());
+			return new Next("sellSuccess", temp, this);
 		} else {
-			String temp = String.format(SELL_FAIL_TEXT, itemName,
-					other.getMoney(), itemName, itemValue);
-			return (new Next("sellFail", temp, this));
+			String temp = String.format(TRADE_FAIL_TEXT, "sell", itemName);
+			return new Next("sellFail", temp, this);
 		}
 	}
 

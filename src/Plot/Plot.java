@@ -128,6 +128,16 @@ public class Plot {
         plot[plottable.getY()][plottable.getX()].addPlottable(plottable);
     }
 
+    public void addPlottable(Plottable plottable, String tile) {
+        for(int x = 0; x < size; x++) {
+            for(int y = 0; y < size; y++) {
+                if(tile.equals(plot[y][x].getName(1))) {
+                    plot[y][x].addPlottable(plottable);
+                }
+            }
+        }
+    }
+
     /*
      * Creates a separate tile for every unique description
      */
@@ -146,7 +156,7 @@ public class Plot {
         tileList = new ArrayList<Tile>();
         for (Map.Entry<String, JsonElement> element : tileJSON.entrySet()) {
             Tile tile = gson.fromJson(element.getValue(), Tile.class);
-            tile.setid(element.getKey());
+            tile.setName(element.getKey());
             tileList.add(tile);
         }
     }

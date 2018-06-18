@@ -1,6 +1,7 @@
 package Events;
 
 import Quests.EventRoot;
+import javafx.scene.control.Button;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,23 +21,32 @@ public class Special extends Event {
     int next;
 
     public Special(String title, String text, EventRoot root,
-                   List<Event> children, String response, int next) {
-        super(title, text);
+                   List<Event> childrenEvents, String response, int next) {
+        super(title, text, createButtonNames(childrenEvents));
         this.response = response;
         this.root = root;
         this.next = next;
 
-        this.children = new HashMap<>();
-        List<String> buttons = new ArrayList<>();
-        for(Event event : children) {
-            this.children.put(event.getResponse(), event);
-            buttons.add(event.getResponse());
+
+        children = new HashMap<>();
+        for(Event event : childrenEvents) {
+            children.put(event.getResponse(), event);
         }
-        createButtons(buttons);
+    }
+
+    private static String[] createButtonNames(List<Event> childrenEvents) {
+        List<String> buttonNames = new ArrayList<>();
+        for(Event event : childrenEvents) {
+            buttonNames.add(event.getResponse());
+        }
+
+        return buttonNames.toArray(new String[0]);
     }
 
     @Override
-    public Event chooseNewEvent(String command) {
+    public Event chooseNewEvent(Button button) {
+        String command = button.getText();
+
         if(!(children.get(command) instanceof Special)) {
             root.finish(next);
         }

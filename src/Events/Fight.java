@@ -3,6 +3,7 @@ package Events;
 import static Main.Game.me;
 
 import Things.Entities.Entity;
+import javafx.scene.control.Button;
 
 public class Fight extends Event  {
 
@@ -18,9 +19,11 @@ public class Fight extends Event  {
     /* halves the incoming damage */
     private static final double defenseModifier = 0.5;
 
+    private Entity other;
+
     public Fight(String title, String text, Entity npc, Event
                  parentEvent) {
-        super(title, text, parentEvent, BUTTON_SET);
+        super(title, text, parentEvent, npc, BUTTON_SET);
         other = npc;
     }
 
@@ -43,7 +46,9 @@ public class Fight extends Event  {
     }
 
     @Override
-    public Event chooseNewEvent(String command) {
+    public Event chooseNewEvent(Button button) {
+        String command = button.getText();
+
         /* for now, the monster will do the same as the player */
         Entity[] participants = {me, other};
 

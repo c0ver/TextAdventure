@@ -1,12 +1,12 @@
 package Events;
 
+import Plot.Plot;
 import Quests.Quest;
+import Things.Entities.Entity;
 import Things.Plottable;
+import javafx.scene.control.Button;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Interact extends Event {
 
@@ -15,23 +15,28 @@ public class Interact extends Event {
     private static final String BUTTON = "Go Back";
 
     public Interact(Plottable plottable, Event parentEvent) {
-        super(plottable.getName(), plottable.getDescription(), parentEvent);
+        super(plottable.getName(), plottable.getDescription(), parentEvent,
+                null, plottable.getInteractions());
+        other = plottable;
 
-        talkOptions = new HashMap<>();
-        List<String> buttons = new ArrayList<>();
-        for(Quest quest : plottable.getQuests()) {
-            talkOptions.put(quest.nextStep(), quest);
-            buttons.add(quest.nextStep());
+        if(other.getQuests() != null) {
+            talkOptions = new HashMap<>();
+            for(Quest quest : other.getQuests()) {
+                talkOptions.put(quest.nextStep(), quest);
+            }
         }
-
-        buttons.add(BUTTON);
-        createButtons(buttons);
     }
 
     @Override
-    public Event chooseNewEvent(String command) {
-        if(command.equals(BUTTON)) {
-            return parentEvent;
+    public Event chooseNewEvent(Button button) {
+        String command = button.getText();
+
+        switch(command) {
+            case BUTTON:
+                return parentEvent;
+            case "Trade":
+                return new Trade(other.getName(), other.getDescription(),
+                        (Entity) other, this);
         }
         return talkOptions.get(command).doQuest();
     }

@@ -7,8 +7,7 @@ import com.google.gson.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Item extends Thing {
@@ -21,9 +20,12 @@ public class Item extends Thing {
     private static final String ITEM_TYPE_ERROR = "ERROR: %s is not a valid " +
             "item type\n";
 
-    public static List<Item> itemList = new ArrayList<>();
+    public static final int MONEY_ID = 10000;
 
-	private int weight, value;
+    private static Map<Integer, Item> itemMap;
+
+    private int[] value;
+	private int weight;
 	private Rarity rarity;
 	private Type type;
 
@@ -32,29 +34,33 @@ public class Item extends Thing {
 	}
 	
 	protected Item(String name, int id, String description, Rarity rarity,
-                   Type type, int value) {
+                   Type type, int[] value) {
 	    super(name, id, description);
 	    this.rarity = rarity;
 	    this.type = type;
 	    this.value = value;
 	}
 
-	public int getValue() {
+	public int[] getValue() {
 		return value;
 	}
 
-	public static void createItems() {
+	public static Map<Integer, Item> getItemMap() { return itemMap; }
+
+	public static int[] getValue(int itemID) { return itemMap.get(itemID).value; }
+
+	public static Map<Integer, Item> createItems() {
         Gson gson = new Gson();
-        FileReader itemGSON;
+        FileReader itemGSON = null;
         try {
             itemGSON = new FileReader(ITEM_LIST_FILE);
         } catch (FileNotFoundException e) {
-            System.err.printf(ITEM_FILE_ERROR, ITEM_LIST_FILE);
             e.printStackTrace();
-            return;
+            System.exit(0);
         }
         JsonObject itemJSON = gson.fromJson(itemGSON, JsonObject.class);
 
+        itemMap = new HashMap<>();
         for (Map.Entry<String, JsonElement> element : itemJSON.entrySet()) {
             Type type = Type.valueOf(
                     element.getValue().getAsJsonObject().get("type").getAsString() );
@@ -79,7 +85,9 @@ public class Item extends Thing {
                     continue;
             }
             item.setName(element.getKey());
-            itemList.add(item);
+            itemMap.put(item.getid(), item);
         }
+
+        return itemMap;
     }
 }

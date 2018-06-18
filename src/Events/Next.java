@@ -1,6 +1,7 @@
 package Events;
 
 import Things.Entities.Entity;
+import javafx.scene.control.Button;
 
 public class Next extends Event {
 	
@@ -21,7 +22,7 @@ public class Next extends Event {
 	}
 
 	@Override
-	public Event chooseNewEvent(String command) {
+	public Event chooseNewEvent(Button button) {
     	if(nextEvent != null) {
     		return nextEvent;
 		}

@@ -8,11 +8,11 @@
         "triggerID": -1,
         "triggerAction": "N/A",
         "timeLength": 0,
-        "rewards": {
-          "Silver": 1,
-          "Dagger": 1
+        "gain": {
+          "10001": 1,
+          "4202": 1
         },
-        "expenses": {},
+        "lose": {},
         "eventSeries": [
           {
             "response": "N/A",
@@ -34,8 +34,8 @@
         "triggerID": 1,
         "triggerAction": "TALK",
         "timeLength": 0.5,
-        "rewards": {},
-        "expenses": {},
+        "gain": {},
+        "lose": {},
         "eventSeries": [
           {
             "response": "N/A",
@@ -67,11 +67,11 @@
         "triggerID": 1,
         "triggerAction": "TALK",
         "timeLength": 0.5,
-        "rewards": {
-          "Spear": 1,
-          "Gambeson": 1
+        "gain": {
+          "4101": 1,
+          "4201": 1
         },
-        "expenses": {},
+        "lose": {},
         "eventSeries": [
           {
             "response": "N/A",
@@ -94,12 +94,12 @@
         "timeLength": 84,
         "triggerID": 1,
         "triggerAction": "TALK",
-        "rewards": {
-          "Copper": 6
+        "gain": {
+          "10000": 6
         },
-        "expenses": {
-          "Spear": 1,
-          "Gambeson": 1
+        "lose": {
+          "4101": 1,
+          "4201": 1
         },
         "eventSeries": [
           {
